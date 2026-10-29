@@ -1,0 +1,59 @@
+name: Deploy Twine Game to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Tweego
+        run: |
+          # Download Tweego
+          TWEEGO_VERSION="2.1.1"
+          wget -q "https://github.com/tmedwards/tweego/releases/download/v${TWEEGO_VERSION}/tweego-${TWEEGO_VERSION}-linux-x64.zip" -O tweego.zip
+          unzip -q tweego.zip -d tweego-bin
+          chmod +x tweego-bin/tweego
+
+          # Download SugarCube 2 story format
+          SUGARCUBE_VERSION="2.37.3"
+          wget -q "https://github.com/tmedwards/sugarcube-2/releases/download/v${SUGARCUBE_VERSION}/sugarcube-${SUGARCUBE_VERSION}-for-tweego.zip" -O sugarcube.zip
+          mkdir -p tweego-bin/storyformats
+          unzip -q sugarcube.zip -d tweego-bin/storyformats
+
+      - name: Build story
+        run: |
+          mkdir -p dist
+          export TWEEGO_PATH="$(pwd)/tweego-bin/storyformats"
+          ./tweego-bin/tweego -o dist/index.html src/story.twee
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

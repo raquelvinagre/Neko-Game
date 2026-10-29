@@ -1,0 +1,277 @@
+:: StoryTitle
+The Forgotten Tower
+
+:: StoryData
+{
+  "ifid": "D674C58C-DEFA-4F70-B7A2-27742230C0FC",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "Start"
+}
+
+:: StoryStylesheet [stylesheet]
+body {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+}
+
+#story {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+a {
+  color: #e94560 !important;
+}
+
+a:hover {
+  color: #ff6b81 !important;
+  text-decoration: none !important;
+}
+
+h1, h2, h3 {
+  color: #0f3460;
+  font-family: 'Georgia', serif;
+}
+
+.passage {
+  font-size: 1.1em;
+  line-height: 1.7;
+}
+
+:: Start
+! The Forgotten Tower
+
+You stand at the edge of a crumbling stone path that winds through a dark forest. Ahead, barely visible through the twisted branches, a tower rises against the pale moonlight. Its peak disappears into the low-hanging clouds.
+
+A cold wind howls through the trees, carrying with it the faint sound of... music? Or perhaps a voice calling from the tower.
+
+Your lantern flickers. You check your pack: a length of rope, a rusty key you found at the crossroads, and a half-eaten apple.
+
+What do you do?
+
+* [[Approach the tower cautiously|Tower Entrance]]
+* [[Investigate the strange sounds first|Forest Sounds]]
+* [[Turn back — this was a mistake|Turn Back]]
+
+:: Tower Entrance
+! The Tower Entrance
+
+You follow the crumbling path until you reach the base of the tower. Up close, it's even more imposing — ancient stones covered in moss and strange carvings that seem to shift when you aren't looking directly at them.
+
+The wooden door is massive, bound with iron bands that have rusted to a deep orange. There's a keyhole, but also a gap where the wood has rotted away near the bottom.
+
+<<set $hasKey to true>>
+
+* [[Try the rusty key in the lock|Try Key]]
+* [[Squeeze through the gap in the door|Squeeze Through]]
+* [[Examine the carvings more closely|Examine Carvings]]
+
+:: Forest Sounds
+! The Forest Sounds
+
+You step off the path and push through the undergrowth, following the eerie melody. Branches scratch at your face and catch on your cloak.
+
+After a few minutes, you find the source: a small music box, half-buried in the dirt at the base of an ancient oak tree. It's playing a haunting waltz, its mechanism still turning despite obvious age.
+
+<<set $hasMusicBox to true>>
+
+You pick it up. The melody changes — now it seems to be guiding you, growing louder when you face the tower and softer when you turn away.
+
+* [[Follow the music box's guidance to the tower|Tower Entrance]]
+* [[Wind the music box further|Wind Music Box]]
+
+:: Turn Back
+! Turning Back
+
+You take three steps back down the path before the lantern goes out completely. In the sudden darkness, you realize the path behind you has... changed. The trees have moved closer together, forming an impenetrable wall of bark and thorns.
+
+There is no going back.
+
+The tower's faint glow is the only light now.
+
+* [[Head toward the tower — it's the only way|Tower Entrance]]
+
+:: Try Key
+! The Key Fits
+
+With a grinding screech that echoes through the forest, the rusty key turns in the lock. The door swings inward, releasing a gust of stale, warm air.
+
+Inside, a spiral staircase winds upward into darkness. Candles along the wall flicker to life as if sensing your presence, illuminating faded tapestries depicting a tall figure in robes standing atop this very tower.
+
+<<set $enteredProperly to true>>
+
+* [[Climb the staircase|Spiral Staircase]]
+* [[Search the ground floor first|Ground Floor]]
+
+:: Squeeze Through
+! Through the Gap
+
+You drop to your hands and knees and squeeze through the rotted gap. Splinters catch your clothing and something scurries away in the darkness beyond.
+
+You emerge into the tower's ground floor, dusty and scratched but inside. However, you've made quite a bit of noise...
+
+You hear a soft thud from somewhere above. Something knows you're here.
+
+* [[Climb the staircase quickly|Spiral Staircase]]
+* [[Hide and wait|Hide]]
+
+:: Examine Carvings
+! The Carvings
+
+You hold your lantern close to the stone carvings. They depict a story:
+
+A wizard building the tower, stone by stone, with magic flowing from their hands. Then visitors arriving — scholars, kings, ordinary people — all seeking knowledge. Then... something went wrong. The final panel shows the wizard alone, the tower sealed, stars falling from the sky.
+
+One carving is different from the rest — it's a small indentation shaped like a music box.
+
+<<if $hasMusicBox>>
+  The music box you found fits perfectly into the indentation! The wall rumbles and a hidden passage opens beside the door.
+
+  * [[Enter the hidden passage|Hidden Passage]]
+  * [[Use the front door instead|Try Key]]
+<<else>>
+  It looks like something should fit here, but you have nothing that matches.
+
+  * [[Try the front door|Try Key]]
+  * [[Go back and search the forest|Forest Sounds]]
+<</if>>
+
+:: Wind Music Box
+! Winding the Music Box
+
+You wind the music box further. The melody grows more complex, more urgent. Images flash through your mind — a study filled with books, a telescope pointed at the stars, a figure reaching out toward you with desperate eyes.
+
+Then the music box stops. A single note hangs in the air, pointing like an arrow toward the tower.
+
+A word forms in your mind: //"Remember."//
+
+* [[Go to the tower|Tower Entrance]]
+
+:: Ground Floor
+! The Ground Floor
+
+The ground floor is a circular room lined with bookshelves. Most of the books have crumbled to dust, but a few remain intact. A desk sits in the center, covered in star charts and strange equations.
+
+You find a journal. The last entry reads:
+
+> "The door above will only open for one who comes with good intentions. I have sealed myself in to protect what must not be lost. If you read this, I have waited too long. Please — climb. Remember what I was."
+
+<<set $hasJournal to true>>
+
+* [[Climb the staircase|Spiral Staircase]]
+
+:: Hide
+! Hiding in the Shadows
+
+You press yourself against the wall and douse your lantern. In the darkness, you hear footsteps descending the staircase — slow, deliberate, but somehow... uncertain. As if whoever is walking has forgotten how.
+
+The footsteps stop. A voice, dry as ancient paper, whispers:
+
+//"Is someone there? I've been waiting so long... Please, don't be afraid."//
+
+* [[Reveal yourself|Meet the Wizard]]
+* [[Stay hidden and observe|Stay Hidden]]
+
+:: Hidden Passage
+! The Hidden Passage
+
+The passage spirals upward inside the walls of the tower itself. Through narrow gaps in the stone, you catch glimpses of the rooms within — the library, the staircase, a laboratory filled with glowing instruments.
+
+The music box hums contentedly in your hands.
+
+You emerge at the top of the tower, behind a heavy curtain, in a room filled with starlight.
+
+<<set $secretPath to true>>
+
+* [[Step through the curtain|Tower Top]]
+
+:: Spiral Staircase
+! The Spiral Staircase
+
+You climb. And climb. The stairs seem to go on far longer than the tower's height should allow. The candles continue to light your way, each one guttering out behind you as if urging you forward.
+
+<<if $hasJournal>>
+  The journal's words echo in your mind: //"Remember what I was."//
+<</if>>
+
+Finally, you reach a landing. A single door stands before you, made of dark wood with a silver handle. Starlight leaks from beneath it.
+
+* [[Open the door|Tower Top]]
+
+:: Stay Hidden
+! Watching from the Shadows
+
+A figure descends into view — tall, impossibly thin, wrapped in robes that shimmer like starlight. Their eyes are distant, clouded, and they move as if in a dream.
+
+It's the wizard from the carvings. Still alive after all these centuries, but barely. They drift past you and sit at the desk, staring at the star charts without seeing them.
+
+//"Another night,"// they murmur. //"Another night alone with the stars."//
+
+* [[Speak to the wizard|Meet the Wizard]]
+
+:: Meet the Wizard
+! The Wizard
+
+The wizard turns to you. Their eyes widen — for a moment, clarity returns to them.
+
+//"You came. After all this time, someone came."//
+
+They gesture weakly toward the staircase above.
+
+//"Please. The top of the tower. My life's work is there — the map of every star, every world, every possibility. I preserved it, but I can no longer read it. My eyes have grown too old, my mind too scattered."//
+
+They press a silver key into your hands.
+
+//"Take it. Share it with the world. Don't let it be forgotten."//
+
+<<set $hasSilverKey to true>>
+
+* [[Climb to the top of the tower|Tower Top]]
+
+:: Tower Top
+! The Top of the Tower
+
+You step into the room at the top of the tower, and your breath catches.
+
+The ceiling is open to the sky, but it's not just the sky you see — it's //everything//. Stars swirl in patterns you've never seen, and between them, faint lines connect them like a vast web. Each intersection glows with a tiny point of light, and when you focus on one, you see... a world. Forests, oceans, cities, beings of every kind.
+
+It's a map. A map of the entire universe, living and breathing above you.
+
+<<if $secretPath>>
+  The music box in your hands plays one final note, and the map //sings back//. The lines brighten, the worlds glow, and for a moment, you understand everything — every connection, every story, every possibility.
+<<elseif $hasJournal>>
+  You remember the wizard's words. This is what must not be lost. This is what must be shared.
+<</if>>
+
+On a pedestal in the center of the room sits a single, leather-bound book — the key to reading the map.
+
+* [[Take the book and descend|Ending]]
+
+:: Ending
+! A New Beginning
+
+You carry the book down the tower's stairs. 
+
+<<if $hasSilverKey>>
+  As you pass the wizard, they smile — truly smile — for perhaps the first time in centuries. They close their eyes, and the shimmer of their robes fades to simple, comfortable cloth. They look peaceful.
+
+  //"Thank you,"// they whisper. //"Now I can rest."//
+<</if>>
+
+You step out of the tower into the dawn. The forest that seemed so threatening last night is transformed by morning light into something beautiful — birds singing, dew glistening on spider webs, a deer watching you curiously from between the trees.
+
+You open the book. The first page reads:
+
+> //To whoever holds this book: the universe is vast, beautiful, and interconnected. Every star has a story. Every world has a song. You now hold the key to all of them.//
+>
+> //Use it wisely. Use it kindly. And never stop exploring.//
+
+''THE END''
+
+---
+
+//Thank you for playing **The Forgotten Tower**.//
+
+//You discovered <<print Object.keys(State.variables).length>> secrets on your journey.//
+

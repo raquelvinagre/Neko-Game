@@ -1,0 +1,12 @@
+{
+  "name": "the-forgotten-tower",
+  "version": "1.0.0",
+  "description": "A Twine interactive fiction game - The Forgotten Tower",
+  "scripts": {
+    "build": "tweego -o dist/index.html src/story.twee",
+    "watch": "tweego -o dist/index.html -w src/"
+  },
+  "keywords": ["twine", "interactive-fiction", "game"],
+  "license": "MIT"
+}
+
