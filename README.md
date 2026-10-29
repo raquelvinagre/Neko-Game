@@ -1,14 +1,6 @@
 # The Forgotten Tower 🏰
 
-An interactive fiction game built with [Twine](https://twinery.org/) (SugarCube 2 format), compiled with [Tweego](https://www.motoslave.net/tweego/), and automatically deployed to GitHub Pages via GitHub Actions.
-
-## 🎮 Play
-
-Once deployed, the game is available at:
-
-```
-https://<your-username>.github.io/<repo-name>/
-```
+An interactive fiction game about exploring a mysterious tower, built with [Twine](https://twinery.org/) and the [SugarCube 2](https://www.motoslave.net/sugarcube/2/) story format.
 
 ## 📖 Story
 
@@ -43,34 +35,6 @@ tweego -o dist/index.html -w src/
 
 Then open `dist/index.html` in your browser.
 
-## 🚀 Deployment
-
-This project uses **GitHub Actions** to automatically build and deploy to **GitHub Pages** on every push to `main`.
-
-### Setup
-
-1. Push this repo to GitHub
-2. Go to **Settings → Pages**
-3. Under **Source**, select **GitHub Actions**
-4. Push a commit to `main` (or manually trigger the workflow from the Actions tab)
-
-The workflow will:
-1. Install Tweego and SugarCube 2
-2. Compile `src/story.twee` → `dist/index.html`
-3. Deploy `dist/` to GitHub Pages
-
-## 📁 Project Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-│       └── deploy.yml      # GitHub Actions workflow
-├── src/
-│   └── story.twee          # Twine story source (Twee format)
-├── package.json
-└── README.md
-```
 
 ## 📝 Writing Your Own Story
 
