@@ -39,10 +39,10 @@ jobs:
 
       - name: Verify setup
         run: |
-          echo "Tweego version:"
-          ./tweego-bin/tweego --version
-          echo "Story formats:"
+          echo "Story formats found:"
           ls -la storyformats/sugarcube-2/
+          echo "Listing Tweego formats:"
+          TWEEGO_PATH="$(pwd)/storyformats" ./tweego-bin/tweego --list-formats || true
 
       - name: Build story
         run: |
