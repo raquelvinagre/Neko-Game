@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # Tweego binary (local dev)
-tweego-bin/
+tweego-bin/*
 *.zip
 
 # OS files

@@ -1,5 +1,11 @@
 :: StoryTitle
-The Forgotten Tower
+Catastrophe
+
+:: StoryCaption
+Health: $health
+Hunger: $hunger
+Trust in Cats: $trustCats
+Trust in Humans: $trustHumans
 
 :: StoryData
 {
@@ -39,20 +45,46 @@ h1, h2, h3 {
   line-height: 1.7;
 }
 
+
+
+
 :: Start
-! The Forgotten Tower
+! Street Cat
 
-You stand at the edge of a crumbling stone path that winds through a dark forest. Ahead, barely visible through the twisted branches, a tower rises against the pale moonlight. Its peak disappears into the low-hanging clouds.
+//A game about the life of a stray cat.//
 
-A cold wind howls through the trees, carrying with it the faint sound of... music? Or perhaps a voice calling from the tower.
+Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe.
 
-Your lantern flickers. You check your pack: a length of rope, a rusty key you found at the crossroads, and a half-eaten apple.
+Life on the street is often short and always difficult:
 
-What do you do?
+* ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
+* ''Disease:'' Without taking vaccines or vets' interventions, infections spread easily, especially in winter.
+* ''Danger:'' Traffic, cruelty, poison, dogs and extreme weather are constant threats.
+* ''Fast reproduction:'' One unsterilized female can have multiple litters a year, and many kittens do not survive. This is why sterilization programs are important.
 
-* [[Approach the tower cautiously|Tower Entrance]]
-* [[Investigate the strange sounds first|Forest Sounds]]
-* [[Turn back — this was a mistake|Turn Back]]
+In this game, you ''are'' one of them. 
+
+* [[Play Catastrophe |Catastrophe Start]]
+
+<<set $health to 7>>
+<<set $hunger to 5>>
+<<set $trustCats to 5>>
+<<set $trustHumans to 2>>
+
+:: Catastrophe Start
+! First Day
+
+You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet.
+
+You lick your <<listbox "$fur" autoselect>><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes" autoselect>><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, in a reflection in a frozen puddle.
+
+Your stomach growls, as you haven't eaten properly in two days. You must find food and water quickly. You also need to be careful, as the city is full of dangers, and not all humans are kind.
+
+
+
+
+
+
 
 :: Tower Entrance
 ! The Tower Entrance
