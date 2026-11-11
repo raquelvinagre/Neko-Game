@@ -705,7 +705,7 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 * [[Continuar para a estação|estação de Comboios]]
 
 :: Beco do Restaurante
-<<scene "alley.webp" "The alley beside a restaurant">>
+<<scene "alley.mp4" "The alley beside a restaurant">>
 ! Beco ao lado do restaurante
 
 * [[Comer do lixo|Comer do Lixo]]
@@ -721,7 +721,7 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 * [[Fugir|Beco do Restaurante]]
 
 :: Comer do Lixo
-<<scene "alley.webp" "A rubbish container behind a restaurant">>
+<<scene "alley.mp4" "A rubbish container behind a restaurant">>
 ! Comer do lixo
 
 * [[Comer o que encontrares|Final - Fome Controlada]]
@@ -774,7 +774,7 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 * [[Continuar com sede|Final - Fome]]
 
 :: Dormir na Rua
-<<scene "alley.webp" "A cardboard box in an alley">>
+<<scene "alley.mp4" "A cardboard box in an alley">>
 ! Dormir na rua
 
 * [[Esperar pela manha|Resgate]]
@@ -802,13 +802,13 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 * [[Ser adotado|Adocao]]
 
 :: Final - Fome
-<<scene "alley.webp" "An empty street">>
+<<scene "alley.mp4" "An empty street">>
 ! Morrer de fome
 
 //Evento de fim: hunger <= 0.//
 
 :: Final - Fome Controlada
-<<scene "alley.webp" "A cat eating safely">>
+<<scene "alley.mp4" "A cat eating safely">>
 ! Fome controlada
 
 //Estado placeholder: hunger recupera.//
@@ -830,13 +830,13 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 //Evento de fim: health <= 0 ou agua contaminada.//
 
 :: Final - Frio
-<<scene "alley.webp" "A cold street after rain">>
+<<scene "alley.mp4" "A cold street after rain">>
 ! Adoecer com o frio
 
 * [[Continuar|Final - Doenca]]
 
 :: Final - Pouca Confianca
-<<scene "alley.webp" "A solitary cat in the street">>
+<<scene "alley.mp4" "A solitary cat in the street">>
 ! Pouca confianca
 
 //Estado: pouca confianca nos gatos e nos humanos.//
