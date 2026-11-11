@@ -1,12 +1,11 @@
 {
-  "name": "the-forgotten-tower",
+  "name": "neko",
   "version": "1.0.0",
-  "description": "A Twine interactive fiction game - The Forgotten Tower",
+  "description": "A Twine interactive fiction game about a stray cat",
   "scripts": {
-    "build": "tweego -o dist/index.html src/story.twee",
+    "build": "tweego -o dist/index.html src/story.twee && node -e \"require('fs').cpSync('assets', 'dist/assets', { recursive: true })\"",
     "watch": "tweego -o dist/index.html -w src/"
   },
   "keywords": ["twine", "interactive-fiction", "game"],
   "license": "MIT"
 }
-

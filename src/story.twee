@@ -1,11 +1,50 @@
 :: StoryTitle
-Catastrophe
+Neko
 
-:: StoryCaption
-Health: $health
-Hunger: $hunger
-Trust in Cats: $trustCats
-Trust in Humans: $trustHumans
+:: StoryInterface
+<div class="game-layout">
+  <aside class="status-sidebar" aria-label="Cat status">
+    <div class="status-panel">
+  <span class="status-item">
+    <span class="status-icon" aria-label="Health icon"><img src="assets/heart.svg" alt="Health icon" onerror="this.onerror = null; this.src = '../assets/heart.svg';"></span>
+    <span class="status-content">
+      <span class="status-label">HEALTH <b data-status-value="health"><<print $health>></b></span>
+      <span class="status-bar"><span class="status-fill" data-status-fill="health" @style="'width: ' + ($health * 10) + '%'"></span></span>
+    </span>
+  </span>
+  <span class="status-item">
+    <span class="status-icon" aria-label="Hunger icon"><img src="assets/hunger.svg" alt="Hunger icon" onerror="this.onerror = null; this.src = '../assets/hunger.svg';"></span>
+    <span class="status-content">
+      <span class="status-label">HUNGER <b data-status-value="hunger"><<print $hunger>></b></span>
+      <span class="status-bar"><span class="status-fill" data-status-fill="hunger" @style="'width: ' + ($hunger * 10) + '%'"></span></span>
+    </span>
+  </span>
+  <span class="status-item">
+    <span class="status-icon" aria-label="Cats trust icon"><img src="assets/cat.svg" alt="Cats trust icon" onerror="this.onerror = null; this.src = '../assets/cat.svg';"></span>
+    <span class="status-content">
+      <span class="status-label">TRUST - CATS <b data-status-value="trustCats"><<print $trustCats>></b></span>
+      <span class="status-bar"><span class="status-fill" data-status-fill="trustCats" @style="'width: ' + ($trustCats * 10) + '%'"></span></span>
+    </span>
+  </span>
+  <span class="status-item">
+    <span class="status-icon" aria-label="Humans trust icon"><img src="assets/person.svg" alt="Humans trust icon" onerror="this.onerror = null; this.src = '../assets/person.svg';"></span>
+    <span class="status-content">
+      <span class="status-label">TRUST - HUMANS <b data-status-value="trustHumans"><<print $trustHumans>></b></span>
+      <span class="status-bar"><span class="status-fill" data-status-fill="trustHumans" @style="'width: ' + ($trustHumans * 10) + '%'"></span></span>
+    </span>
+  </span>
+    </div>
+    <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false">
+      <span aria-hidden="true">♫</span> MUSIC: OFF
+    </button>
+  </aside>
+  <div id="passages"></div>
+</div>
+
+:: StoryWidgets [widget]
+<<widget "scene">>>
+  <<print '<figure class="scene-media" data-scene-file="' + $args[0] + '" aria-label="' + $args[1] + '"><span class="scene-placeholder" aria-hidden="true"></span></figure>'>>
+<</widget>>
 
 :: StoryData
 {
@@ -15,41 +54,528 @@ Trust in Humans: $trustHumans
   "start": "Start"
 }
 
+:: StoryScript [script]
+(() => {
+  function initializeVariables() {
+    const defaults = {
+      health: 7,
+      hunger: 5,
+      trustCats: 5,
+      trustHumans: 2
+    };
+
+    Object.entries(defaults).forEach(([name, value]) => {
+      if (typeof State.variables[name] !== 'number') {
+        State.variables[name] = value;
+      }
+    });
+  }
+
+  initializeVariables();
+
+  function updateMusicButton(audio) {
+    const button = document.getElementById('music-toggle');
+    if (!button) {
+      return;
+    }
+
+    const isPlaying = !audio.paused;
+    button.setAttribute('aria-pressed', String(isPlaying));
+    button.innerHTML = `<span aria-hidden="true">${isPlaying ? '♫' : '♪'}</span> MUSIC: ${isPlaying ? 'ON' : 'OFF'}`;
+  }
+
+  function updateStatusBars() {
+    ['health', 'hunger', 'trustCats', 'trustHumans'].forEach((name) => {
+      const value = Math.max(0, Math.min(10, Number(State.variables[name]) || 0));
+      const valueElement = document.querySelector(`[data-status-value="${name}"]`);
+      const fillElement = document.querySelector(`[data-status-fill="${name}"]`);
+
+      if (valueElement) {
+        valueElement.textContent = value;
+      }
+      if (fillElement) {
+        fillElement.style.width = `${value * 10}%`;
+      }
+    });
+  }
+
+  function loadSceneMedia() {
+    document.querySelectorAll('.scene-media[data-scene-file]').forEach((media) => {
+      if (media.querySelector('img, video')) {
+        return;
+      }
+
+      const file = media.dataset.sceneFile;
+      const isVideo = file.toLowerCase().endsWith('.mp4');
+      const element = document.createElement(isVideo ? 'video' : 'img');
+      element.dataset.file = file;
+      const sources = [`assets/${file}`, `../assets/${file}`];
+      let sourceIndex = 0;
+
+      media.classList.add('is-loading');
+      element.src = sources[sourceIndex];
+
+      if (isVideo) {
+        element.autoplay = true;
+        element.loop = true;
+        element.muted = true;
+        element.playsInline = true;
+        element.preload = 'metadata';
+      } else {
+        element.alt = media.getAttribute('aria-label') || 'Scene';
+      }
+
+      element.onerror = () => {
+        sourceIndex += 1;
+        if (sourceIndex < sources.length) {
+          element.src = sources[sourceIndex];
+          if (isVideo) {
+            element.load();
+          }
+        } else {
+          media.classList.remove('is-loading');
+          media.classList.add('has-error');
+        }
+      };
+      element.onload = () => media.classList.remove('is-loading');
+      if (isVideo) {
+        element.addEventListener('loadeddata', () => media.classList.remove('is-loading'), { once: true });
+      }
+      media.appendChild(element);
+    });
+  }
+
+  $(document).on(':passagerender', () => {
+    const isAlleyEntry = State.passage === 'Beco';
+
+    loadSceneMedia();
+
+    if (isAlleyEntry) {
+      window.setTimeout(() => {
+        const media = document.querySelector('.scene-media');
+        if (!media) {
+          return;
+        }
+        media.classList.add('powering-on');
+        window.setTimeout(() => media.classList.remove('powering-on'), 850);
+      }, 0);
+    }
+
+    updateStatusBars();
+
+    if (!document.querySelector('link[data-neko-favicon]')) {
+      const favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      favicon.type = 'image/svg+xml';
+      favicon.href = `data:image/svg+xml,${encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">' +
+        '<rect width="32" height="32" rx="6" fill="#777b70"/>' +
+        '<path d="M7 12 10 5l6 5 6-5 3 7v9c0 4-4 6-9 6s-9-2-9-6z" fill="#26352b"/>' +
+        '<circle cx="13" cy="18" r="2" fill="#a0b17f"/>' +
+        '<circle cx="21" cy="18" r="2" fill="#a0b17f"/>' +
+        '</svg>'
+      )}`;
+      favicon.dataset.nekoFavicon = 'true';
+      document.head.appendChild(favicon);
+    }
+
+    let audio = document.getElementById('background-music');
+    if (!audio) {
+      audio = document.createElement('audio');
+      audio.id = 'background-music';
+      audio.loop = true;
+      audio.preload = 'none';
+      audio.src = 'assets/background-music.mp3';
+      audio.addEventListener('error', () => {
+        if (audio.src.endsWith('/assets/background-music.mp3')) {
+          audio.src = '../assets/background-music.mp3';
+        }
+      }, { once: true });
+      document.body.appendChild(audio);
+    }
+
+    updateMusicButton(audio);
+  });
+
+  $(document).on(':passageend', updateStatusBars);
+
+  const sceneObserver = new MutationObserver(loadSceneMedia);
+  sceneObserver.observe(document.body, { childList: true, subtree: true });
+
+  $(document).on('click', '#music-toggle', () => {
+    const audio = document.getElementById('background-music');
+    if (!audio) {
+      return;
+    }
+
+    if (audio.paused) {
+      audio.play().then(() => updateMusicButton(audio)).catch(() => updateMusicButton(audio));
+    } else {
+      audio.pause();
+      updateMusicButton(audio);
+    }
+  });
+})();
+
 :: StoryStylesheet [stylesheet]
+:root {
+  --ink: #c5d0d5;
+  --muted: #7a718a;
+  --panel: rgba(17, 25, 41, 0.96);
+  --blue: #6374a3;
+  --blue-light: #a49bc4;
+  --steel: #3d3951;
+  --street: #0c1114;
+  --gameboy-shell: #777b70;
+  --gameboy-shell-dark: #4c514b;
+  --gameboy-shell-red: #913b3b;
+  --gameboy-screen: #a0b17f;
+  --gameboy-ink: #26352b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #1a1a2e;
-  color: #e0e0e0;
+  background:
+    linear-gradient(rgba(126, 130, 163, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 50% 0%, #28263c 0, #15111d 42%, #06060a 100%);
+  background-size: 100% 5px, auto;
+  color: var(--ink);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 16px;
+  min-height: 100vh;
 }
 
 #story {
-  max-width: 680px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 0.25rem 2rem;
 }
 
-a {
-  color: #e94560 !important;
+.game-layout {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 270px minmax(0, 1fr);
 }
 
-a:hover {
-  color: #ff6b81 !important;
-  text-decoration: none !important;
+.status-sidebar {
+  position: sticky;
+  top: 1rem;
 }
 
-h1, h2, h3 {
-  color: #0f3460;
-  font-family: 'Georgia', serif;
+#passages {
+  background: linear-gradient(135deg, #929784, var(--gameboy-shell) 58%, #686e61);
+  border: 3px solid var(--gameboy-shell-dark);
+  border-radius: 1.25rem 1.25rem 2rem 1.25rem;
+  box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(219, 224, 194, 0.18);
+  padding: clamp(1rem, 3vw, 2rem);
+  position: relative;
 }
 
 .passage {
+  color: var(--gameboy-ink);
   font-size: 1.1em;
-  line-height: 1.7;
+  line-height: 1.45;
 }
 
+.scene-media {
+  background: var(--gameboy-screen);
+  border: 0.7rem solid #30372f;
+  clear: both;
+  border-radius: 0.3rem;
+  display: block;
+  box-shadow: inset 0 0 0 0.25rem #586c4d, 0 0.4rem 0 rgba(44, 49, 42, 0.7);
+  height: clamp(240px, 38vw, 400px);
+  margin: 0 auto 0.5rem;
+  max-width: 92%;
+  overflow: hidden;
+  position: relative;
+  visibility: visible;
+  z-index: 1;
+}
 
+.scene-media.powering-on::after {
+  background: #10150f;
+  color: #b5c79b;
+  content: 'POWER ON';
+  display: grid;
+  font: 0.8rem 'Courier New', monospace;
+  inset: 0;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  place-items: center;
+  pointer-events: none;
+  position: absolute;
+  z-index: 3;
+  animation: gameboy-power-on 850ms steps(3, end) forwards;
+}
 
+.scene-media.powering-on {
+  background: #10150f;
+}
+
+.scene-media.powering-on > * {
+  visibility: hidden;
+}
+
+.scene-media.powering-on .scene-placeholder {
+  visibility: visible;
+}
+
+@keyframes gameboy-power-on {
+  0%, 35% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.scene-media img {
+  display: block;
+  height: 100%;
+  image-rendering: pixelated;
+  object-fit: cover;
+  width: 100%;
+}
+
+.scene-placeholder {
+  background:
+    linear-gradient(90deg, transparent 0 35%, rgba(38, 53, 43, 0.18) 35% 65%, transparent 65%),
+    var(--gameboy-screen);
+  display: block;
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+.scene-media img, .scene-media video {
+  position: relative;
+  z-index: 1;
+}
+
+.scene-media video {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.scene-media.is-loading::after {
+  color: var(--gameboy-ink);
+  content: 'LOADING MEDIA...';
+  font: 0.75rem 'Courier New', monospace;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.scene-media.has-error::after {
+  color: var(--gameboy-ink);
+  content: 'MEDIA UNAVAILABLE';
+  font: 0.75rem 'Courier New', monospace;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.passage h1, .passage h2, .passage h3 {
+  color: var(--gameboy-ink);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: space-between;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.35;
+  min-width: 0;
+  overflow: visible;
+  width: 100%;
+}
+
+.passage h1::before, .passage h2::before, .passage h3::before {
+  color: var(--gameboy-shell-dark);
+  content: '✚';
+  flex: 0 0 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 3em;
+}
+
+.passage h1::after, .passage h2::after, .passage h3::after {
+  background:
+    radial-gradient(circle, var(--gameboy-shell-red) 0 45%, transparent 48%) 2.35rem 0.1rem / 2rem 2rem no-repeat,
+    radial-gradient(circle, var(--gameboy-shell-red) 0 45%, transparent 48%) 0rem 1.15rem / 2rem 2rem no-repeat;
+  color: var(--gameboy-shell-dark) !important;
+  content: '';
+  display: inline-block;
+  flex: 0 0 4.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 7rem;
+  height: 4rem;
+  letter-spacing: 1rem;
+  line-height: 2rem;
+  min-width: 5rem;
+  text-align: center;
+  width: 5rem;
+}
+
+.scene-media + h1, .scene-media + h2, .scene-media + h3 {
+  margin-top: 0;
+}
+
+.passage ul {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.passage li {
+  margin: 0.65rem 0;
+}
+
+a {
+  background: #b5bad3;
+  border: 2px solid var(--gameboy-shell-dark);
+  border-radius: 0.3rem;
+  box-shadow: 0 3px 0 var(--gameboy-shell-dark);
+  color: var(--gameboy-ink) !important;
+  display: block;
+  padding: 0.7rem 0.9rem;
+  text-decoration: none;
+}
+
+a:hover {
+  background: #e2e5c7;
+  color: #101c16 !important;
+  transform: translateY(1px);
+}
+
+/* .passage blockquote {
+  border-left: 3px solid var(--gameboy-shell-dark);
+  color: #344836;
+  padding-left: 1rem;
+} */
+
+.status-panel {
+  color: var(--muted);
+  display: grid;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+.status-item {
+  align-items: center;
+  display: flex;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.status-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.status-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-icon {
+  border: 1px solid var(--steel);
+  color: var(--muted);
+  display: inline-block;
+  flex: 0 0 1.8rem;
+  font-size: 0.45rem;
+  height: 1.8rem;
+  letter-spacing: 0.05em;
+  line-height: 1.8rem;
+  text-align: center;
+  width: 1.8rem;
+}
+
+.status-icon img {
+  display: block;
+  filter: invert(78%) sepia(10%) saturate(450%) hue-rotate(160deg);
+  height: 1.2rem;
+  margin: 0.25rem;
+  width: 1.2rem;
+}
+
+.status-bar {
+  background: var(--street);
+  border: 1px solid var(--steel);
+  display: block;
+  height: 0.5rem;
+  margin-top: 0.3rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.status-fill {
+  background: var(--blue);
+  display: block;
+  height: 100%;
+  transition: width 180ms ease;
+  width: 0;
+}
+
+.status-panel b {
+  color: var(--blue-light);
+  font-size: 0.9rem;
+}
+
+.music-toggle {
+  background: var(--street);
+  border: 1px solid var(--steel);
+  color: var(--blue-light);
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  margin-top: 1rem;
+  padding: 0.7rem 0.8rem;
+  transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  width: 100%;
+}
+
+.music-toggle:hover, .music-toggle[aria-pressed='true'] {
+  background: #2f263e;
+  box-shadow: 0 0 12px rgba(99, 103, 163, 0.25);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  #story {
+    margin: 0.75rem auto;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .status-sidebar {
+    position: static;
+  }
+
+  #passages {
+    padding: 1rem;
+  }
+}
 
 :: Start
-! Street Cat
+<figure class="scene-media scene-placeholder-only" aria-label="Game Boy screen"><span class="scene-placeholder" aria-hidden="true"></span></figure>
+! Neko
 
 //A game about the life of a stray cat.//
 
@@ -58,252 +584,283 @@ Millions of cats live on the streets worldwide. Most were born outside, or were 
 Life on the street is often short and always difficult:
 
 * ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
-* ''Disease:'' Without taking vaccines or vets' interventions, infections spread easily, especially in winter.
+* ''Disease:'' Without vaccines or veterinary care, infections spread easily, especially in winter.
 * ''Danger:'' Traffic, cruelty, poison, dogs and extreme weather are constant threats.
 * ''Fast reproduction:'' One unsterilized female can have multiple litters a year, and many kittens do not survive. This is why sterilization programs are important.
 
-In this game, you ''are'' one of them. 
+In this game, you ''are'' one of them.
 
-* [[Play Catastrophe |Catastrophe Start]]
+* [[Start in the alley|Beco]]
 
-<<set $health to 7>>
-<<set $hunger to 5>>
-<<set $trustCats to 5>>
-<<set $trustHumans to 2>>
+:: Beco
+<<scene "alley.mp4" "A city alley">>
+! The Alley
 
-:: Catastrophe Start
-! First Day
+You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet. Only the sound of rain dripping from the rooftops and the occasional car passing by can be heard.
 
-You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet.
-
-You lick your <<listbox "$fur" autoselect>><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes" autoselect>><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, in a reflection in a frozen puddle.
+You're an elegant, <<listbox "$gender" autoselect>><<option "female">><<option "male">><</listbox>> cat. You lick your <<listbox "$fur" autoselect>><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes" autoselect>><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, reflected in a puddle.
 
 Your stomach growls, as you haven't eaten properly in two days. You must find food and water quickly. You also need to be careful, as the city is full of dangers, and not all humans are kind.
 
+* [[Procurar comida|Parque]]
+* [[Explorar a estação|estação de Comboios]]
+* [[Explorar o restaurante|Restaurante]]
 
+:: Colonia de Gatos
+<<scene "suburbs.gif" "A cat colony">>
+! Colonia de gatos
 
+* [[Ficar com a colonia|Colonia - Ficar]]
+* [[Ir ter com um gato|Gato da Colonia]]
+* [[Sair da colonia|Parque]]
 
+:: Colonia - Ficar
+<<scene "suburbs.gif" "A sheltered cat colony">>
+! Com cuidador
 
+* [[Ficar no gatil|Gatil]]
+* [[Aceitar ajuda de humanos|Adocao]]
 
+:: Gato da Colonia
+<<scene "suburbs.gif" "Two cats sharing a space">>
+! Outro gato
 
-:: Tower Entrance
-! The Tower Entrance
+* [[Partilhar a comida|Colonia - Ficar]]
+* [[Afastar-te do gato|Parque]]
+* [[O gato tem FeLV|Doenca]]
 
-You follow the crumbling path until you reach the base of the tower. Up close, it's even more imposing — ancient stones covered in moss and strange carvings that seem to shift when you aren't looking directly at them.
+:: Gatil
+<<scene "restaurant.gif" "A cat shelter">>
+! Gatil
 
-The wooden door is massive, bound with iron bands that have rusted to a deep orange. There's a keyhole, but also a gap where the wood has rotted away near the bottom.
+* [[Ficar no gatil|Gatil - Jaula]]
+* [[Aceitar esterilizacao|Esterilizacao]]
+* [[Ser adotado por humanos|Adocao]]
 
-<<set $hasKey to true>>
+:: Gatil - Jaula
+<<scene "restaurant.gif" "A cat waiting in a cage">>
+! Vida no gatil
 
-* [[Try the rusty key in the lock|Try Key]]
-* [[Squeeze through the gap in the door|Squeeze Through]]
-* [[Examine the carvings more closely|Examine Carvings]]
+* [[Continuar no gatil|Gatil]]
+* [[Finalizar a historia|Final - Pouca Confianca]]
 
-:: Forest Sounds
-! The Forest Sounds
+:: Adocao
+<<scene "restaurant.gif" "A quiet room with a human caregiver">>
+! Adocao por humanos
 
-You step off the path and push through the undergrowth, following the eerie melody. Branches scratch at your face and catch on your cloak.
+* [[Ficar com os humanos|Final - Adotado]]
+* [[Fugir de volta para a rua|Beco]]
 
-After a few minutes, you find the source: a small music box, half-buried in the dirt at the base of an ancient oak tree. It's playing a haunting waltz, its mechanism still turning despite obvious age.
+:: Parque
+<<scene "suburbs.gif" "A city park">>
+! Parque
 
-<<set $hasMusicBox to true>>
+* [[Caçar um passaro|Passaro]]
+* [[Procurar comida no parque|Piquenique]]
+* [[Aproximar-te dos gatos|Parque - Gatos]]
+* [[Sair do parque|Estação de Comboios]]
 
-You pick it up. The melody changes — now it seems to be guiding you, growing louder when you face the tower and softer when you turn away.
+:: Passaro
+<<scene "suburbs.gif" "A bird in the park">>
+! Objeto passaro
 
-* [[Follow the music box's guidance to the tower|Tower Entrance]]
-* [[Wind the music box further|Wind Music Box]]
+* [[Comer tudo|Final - Fome Controlada]]
+* [[Comer um bocado e levar o resto|Parque - Gatos]]
 
-:: Turn Back
-! Turning Back
+:: Piquenique
+<<scene "suburbs.gif" "People having a picnic">>
+! Humanos a fazer piquenique
 
-You take three steps back down the path before the lantern goes out completely. In the sudden darkness, you realize the path behind you has... changed. The trees have moved closer together, forming an impenetrable wall of bark and thorns.
+* [[Roubar comida|Roubar Comida]]
+* [[Pedir comida|Pedir Comida]]
+* [[Caçar por conta propria|Parque]]
 
-There is no going back.
+:: Roubar Comida
+<<scene "suburbs.gif" "Food left at a picnic">>
+! Roubar comida
 
-The tower's faint glow is the only light now.
+* [[Comer e fugir|Parque]]
+* [[Continuar a explorar|estação de Comboios]]
 
-* [[Head toward the tower — it's the only way|Tower Entrance]]
+:: Pedir Comida
+<<scene "suburbs.gif" "A person noticing a stray cat">>
+! Pedir comida
 
-:: Try Key
-! The Key Fits
+* [[Receber comida|Final - Fome Controlada]]
+* [[As pessoas têm medo do gato|Parque]]
 
-With a grinding screech that echoes through the forest, the rusty key turns in the lock. The door swings inward, releasing a gust of stale, warm air.
+:: Parque - Gatos
+<<scene "suburbs.gif" "Cats crossing the park">>
+! Gatos aproximam-se
 
-Inside, a spiral staircase winds upward into darkness. Candles along the wall flicker to life as if sensing your presence, illuminating faded tapestries depicting a tall figure in robes standing atop this very tower.
+* [[Partilhar a comida|Final - Confianca Gatos Alta]]
+* [[Comer sozinho|Final - Pouca Confianca]]
 
-<<set $enteredProperly to true>>
+:: Restaurante
+<<scene "restaurant.gif" "A restaurant at night">>
+! Restaurante
 
-* [[Climb the staircase|Spiral Staircase]]
-* [[Search the ground floor first|Ground Floor]]
+* [[Esperar pelo trabalhador|Trabalhador Restaurante]]
+* [[Ir para o beco ao lado|Beco do Restaurante]]
+* [[Continuar para a estação|estação de Comboios]]
 
-:: Squeeze Through
-! Through the Gap
+:: Beco do Restaurante
+<<scene "alley.webp" "The alley beside a restaurant">>
+! Beco ao lado do restaurante
 
-You drop to your hands and knees and squeeze through the rotted gap. Splinters catch your clothing and something scurries away in the darkness beyond.
+* [[Comer do lixo|Comer do Lixo]]
+* [[Esperar|Trabalhador Restaurante]]
+* [[Ir para os suburbios|Suburbios]]
 
-You emerge into the tower's ground floor, dusty and scratched but inside. However, you've made quite a bit of noise...
+:: Trabalhador Restaurante
+<<scene "restaurant.gif" "A restaurant worker outside">>
+! Trabalhador do restaurante
 
-You hear a soft thud from somewhere above. Something knows you're here.
+* [[Aceitar restos de peixe|Comer do Lixo]]
+* [[Deixar que se aproxime|Final - Confianca Humanos Alta]]
+* [[Fugir|Beco do Restaurante]]
 
-* [[Climb the staircase quickly|Spiral Staircase]]
-* [[Hide and wait|Hide]]
+:: Comer do Lixo
+<<scene "alley.webp" "A rubbish container behind a restaurant">>
+! Comer do lixo
 
-:: Examine Carvings
-! The Carvings
+* [[Comer o que encontrares|Final - Fome Controlada]]
+* [[Dormir junto ao lixo|Dormir na Rua]]
 
-You hold your lantern close to the stone carvings. They depict a story:
+:: estação de Comboios
+<<scene "restaurant.gif" "A busy train station">>
+! estação de comboios
 
-A wizard building the tower, stone by stone, with magic flowing from their hands. Then visitors arriving — scholars, kings, ordinary people — all seeking knowledge. Then... something went wrong. The final panel shows the wizard alone, the tower sealed, stars falling from the sky.
+* [[Pedir festinhas e comida|estação - Pedir]]
+* [[Ficar a observar as pessoas|estação - Observar]]
+* [[Sair da estação|Suburbios]]
 
-One carving is different from the rest — it's a small indentation shaped like a music box.
+:: estação - Pedir
+<<scene "restaurant.gif" "Passengers moving through a station">>
+! Pedir ajuda na estação
 
-<<if $hasMusicBox>>
-  The music box you found fits perfectly into the indentation! The wall rumbles and a hidden passage opens beside the door.
+* [[Receber comida|Final - Fome Controlada]]
+* [[Nao receber comida suficiente|Final - Fome]]
+* [[Voltar para o beco|Beco]]
 
-  * [[Enter the hidden passage|Hidden Passage]]
-  * [[Use the front door instead|Try Key]]
-<<else>>
-  It looks like something should fit here, but you have nothing that matches.
+:: estação - Observar
+<<scene "restaurant.gif" "A cat watching passengers">>
+! Observar pessoas
 
-  * [[Try the front door|Try Key]]
-  * [[Go back and search the forest|Forest Sounds]]
-<</if>>
+* [[Ficar na estação|estação - Pedir]]
+* [[Atravessar a estrada|Suburbios]]
 
-:: Wind Music Box
-! Winding the Music Box
+:: Suburbios
+<<scene "suburbs.gif" "Quiet suburban streets">>
+! Suburbios
 
-You wind the music box further. The melody grows more complex, more urgent. Images flash through your mind — a study filled with books, a telescope pointed at the stars, a figure reaching out toward you with desperate eyes.
+* [[Ficar nos suburbios|Suburbios - Casa]]
+* [[Continuar a explorar|Parque]]
+* [[Ir embora dos suburbios|Beco]]
 
-Then the music box stops. A single note hangs in the air, pointing like an arrow toward the tower.
+:: Suburbios - Casa
+<<scene "suburbs.gif" "A house garden in the suburbs">>
+! Casa nos suburbios
 
-A word forms in your mind: //"Remember."//
+* [[Beber agua de uma poça|Agua Contaminada]]
+* [[Beber agua de uma tigela|Final - Frio]]
+* [[Fugir do cão|Suburbios]]
 
-* [[Go to the tower|Tower Entrance]]
+:: Agua Contaminada
+<<scene "suburbs.gif" "A puddle in a garden">>
+! Agua contaminada
 
-:: Ground Floor
-! The Ground Floor
+* [[Beber a agua|Final - Doenca]]
+* [[Continuar com sede|Final - Fome]]
 
-The ground floor is a circular room lined with bookshelves. Most of the books have crumbled to dust, but a few remain intact. A desk sits in the center, covered in star charts and strange equations.
+:: Dormir na Rua
+<<scene "alley.webp" "A cardboard box in an alley">>
+! Dormir na rua
 
-You find a journal. The last entry reads:
+* [[Esperar pela manha|Resgate]]
+* [[Procurar outro abrigo|Beco]]
 
-> "The door above will only open for one who comes with good intentions. I have sealed myself in to protect what must not be lost. If you read this, I have waited too long. Please — climb. Remember what I was."
+:: Resgate
+<<scene "restaurant.gif" "A cat being taken to safety">>
+! Resgate
 
-<<set $hasJournal to true>>
+* [[Deixar que te levem|Brigada]]
+* [[Fugir|Beco]]
 
-* [[Climb the staircase|Spiral Staircase]]
+:: Brigada
+<<scene "restaurant.gif" "A veterinary rescue room">>
+! Brigada
 
-:: Hide
-! Hiding in the Shadows
+* [[Aceitar esterilizacao|Esterilizacao]]
+* [[Ficar numa jaula|Gatil - Jaula]]
 
-You press yourself against the wall and douse your lantern. In the darkness, you hear footsteps descending the staircase — slow, deliberate, but somehow... uncertain. As if whoever is walking has forgotten how.
+:: Esterilizacao
+<<scene "restaurant.gif" "A veterinary clinic">>
+! Esterilizacao
 
-The footsteps stop. A voice, dry as ancient paper, whispers:
+* [[Recuperar no gatil|Gatil]]
+* [[Ser adotado|Adocao]]
 
-//"Is someone there? I've been waiting so long... Please, don't be afraid."//
+:: Final - Fome
+<<scene "alley.webp" "An empty street">>
+! Morrer de fome
 
-* [[Reveal yourself|Meet the Wizard]]
-* [[Stay hidden and observe|Stay Hidden]]
+//Evento de fim: hunger <= 0.//
 
-:: Hidden Passage
-! The Hidden Passage
+:: Final - Fome Controlada
+<<scene "alley.webp" "A cat eating safely">>
+! Fome controlada
 
-The passage spirals upward inside the walls of the tower itself. Through narrow gaps in the stone, you catch glimpses of the rooms within — the library, the staircase, a laboratory filled with glowing instruments.
+//Estado placeholder: hunger recupera.//
 
-The music box hums contentedly in your hands.
+* [[Continuar a explorar|Beco]]
 
-You emerge at the top of the tower, behind a heavy curtain, in a room filled with starlight.
+:: Doenca
+<<scene "restaurant.gif" "A sick cat in a quiet room">>
+! FeLV
 
-<<set $secretPath to true>>
+//Evento: o gato foi contagiado.//
 
-* [[Step through the curtain|Tower Top]]
+* [[Continuar apesar da doenca|Final - Doenca]]
 
-:: Spiral Staircase
-! The Spiral Staircase
+:: Final - Doenca
+<<scene "restaurant.gif" "A dark veterinary room">>
+! Morrer de doenca
 
-You climb. And climb. The stairs seem to go on far longer than the tower's height should allow. The candles continue to light your way, each one guttering out behind you as if urging you forward.
+//Evento de fim: health <= 0 ou agua contaminada.//
 
-<<if $hasJournal>>
-  The journal's words echo in your mind: //"Remember what I was."//
-<</if>>
+:: Final - Frio
+<<scene "alley.webp" "A cold street after rain">>
+! Adoecer com o frio
 
-Finally, you reach a landing. A single door stands before you, made of dark wood with a silver handle. Starlight leaks from beneath it.
+* [[Continuar|Final - Doenca]]
 
-* [[Open the door|Tower Top]]
+:: Final - Pouca Confianca
+<<scene "alley.webp" "A solitary cat in the street">>
+! Pouca confianca
 
-:: Stay Hidden
-! Watching from the Shadows
+//Estado: pouca confianca nos gatos e nos humanos.//
 
-A figure descends into view — tall, impossibly thin, wrapped in robes that shimmer like starlight. Their eyes are distant, clouded, and they move as if in a dream.
+* [[Continuar a explorar|Beco]]
 
-It's the wizard from the carvings. Still alive after all these centuries, but barely. They drift past you and sit at the desk, staring at the star charts without seeing them.
+:: Final - Confianca Gatos Alta
+<<scene "suburbs.gif" "Cats sharing food">>
+! Confianca gatos alta
 
-//"Another night,"// they murmur. //"Another night alone with the stars."//
+//Estado: confianca nos gatos alta.//
 
-* [[Speak to the wizard|Meet the Wizard]]
+* [[Continuar a explorar|Colonia de Gatos]]
 
-:: Meet the Wizard
-! The Wizard
+:: Final - Confianca Humanos Alta
+<<scene "restaurant.gif" "A friendly human outside a restaurant">>
+! Confianca humanos alta
 
-The wizard turns to you. Their eyes widen — for a moment, clarity returns to them.
+//Estado: confianca nos humanos alta.//
 
-//"You came. After all this time, someone came."//
+* [[Aceitar ajuda|Adocao]]
 
-They gesture weakly toward the staircase above.
+:: Final - Adotado
+<<scene "restaurant.gif" "A safe home for a cat">>
+! Adotado
 
-//"Please. The top of the tower. My life's work is there — the map of every star, every world, every possibility. I preserved it, but I can no longer read it. My eyes have grown too old, my mind too scattered."//
-
-They press a silver key into your hands.
-
-//"Take it. Share it with the world. Don't let it be forgotten."//
-
-<<set $hasSilverKey to true>>
-
-* [[Climb to the top of the tower|Tower Top]]
-
-:: Tower Top
-! The Top of the Tower
-
-You step into the room at the top of the tower, and your breath catches.
-
-The ceiling is open to the sky, but it's not just the sky you see — it's //everything//. Stars swirl in patterns you've never seen, and between them, faint lines connect them like a vast web. Each intersection glows with a tiny point of light, and when you focus on one, you see... a world. Forests, oceans, cities, beings of every kind.
-
-It's a map. A map of the entire universe, living and breathing above you.
-
-<<if $secretPath>>
-  The music box in your hands plays one final note, and the map //sings back//. The lines brighten, the worlds glow, and for a moment, you understand everything — every connection, every story, every possibility.
-<<elseif $hasJournal>>
-  You remember the wizard's words. This is what must not be lost. This is what must be shared.
-<</if>>
-
-On a pedestal in the center of the room sits a single, leather-bound book — the key to reading the map.
-
-* [[Take the book and descend|Ending]]
-
-:: Ending
-! A New Beginning
-
-You carry the book down the tower's stairs. 
-
-<<if $hasSilverKey>>
-  As you pass the wizard, they smile — truly smile — for perhaps the first time in centuries. They close their eyes, and the shimmer of their robes fades to simple, comfortable cloth. They look peaceful.
-
-  //"Thank you,"// they whisper. //"Now I can rest."//
-<</if>>
-
-You step out of the tower into the dawn. The forest that seemed so threatening last night is transformed by morning light into something beautiful — birds singing, dew glistening on spider webs, a deer watching you curiously from between the trees.
-
-You open the book. The first page reads:
-
-> //To whoever holds this book: the universe is vast, beautiful, and interconnected. Every star has a story. Every world has a song. You now hold the key to all of them.//
->
-> //Use it wisely. Use it kindly. And never stop exploring.//
-
-''THE END''
-
----
-
-//Thank you for playing **The Forgotten Tower**.//
-
-//You discovered <<print Object.keys(State.variables).length>> secrets on your journey.//
-
+//Final placeholder: gato adotado.//

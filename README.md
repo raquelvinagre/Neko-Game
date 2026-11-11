@@ -1,14 +1,14 @@
-# The Forgotten Tower 🏰
+# Neko
 
-An interactive fiction game about exploring a mysterious tower, built with [Twine](https://twinery.org/) and the [SugarCube 2](https://www.motoslave.net/sugarcube/2/) story format.
+An interactive fiction game about surviving as a stray cat, built with [Twine](https://twinery.org/) and the [SugarCube 2](https://www.motoslave.net/sugarcube/2/) story format.
 
 ## 📖 Story
 
-You discover an ancient tower in a dark forest. What secrets does it hold? Explore multiple paths, discover hidden passages, and uncover the wizard's life work — a living map of the entire universe.
+Explore the streets, parks, suburbs, train station, restaurant, cat colony, and shelter while managing health, hunger, and trust.
 
 **Features:**
 - Multiple branching paths and endings
-- Hidden passage discoverable with a secret item
+- Branching locations and survival outcomes
 - Persistent state tracking across your journey
 - Atmospheric CSS styling
 
@@ -35,6 +35,18 @@ tweego -o dist/index.html -w src/
 
 Then open `dist/index.html` in your browser.
 
+### Media
+
+The interface reserves a dark image area above every passage. The included
+`assets/giphy.gif` is used as the animated scene, and the optional looping
+soundtrack can be added as `assets/background-music.mp3`. Music is off by
+default and can be enabled with the `MUSIC` button. The story supports both
+the deployed `dist/index.html` layout and opening `build/Neko.html` directly
+from the local filesystem.
+
+Scene files can be GIF, WebP, or MP4. MP4 scenes play muted, looping, and
+inline above the passage content.
+
 
 ## 📝 Writing Your Own Story
 
@@ -59,4 +71,3 @@ Refer to the [SugarCube 2 documentation](https://www.motoslave.net/sugarcube/2/d
 ## License
 
 MIT
-

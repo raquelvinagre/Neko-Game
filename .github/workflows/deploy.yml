@@ -48,6 +48,7 @@ jobs:
         run: |
           mkdir -p dist
           TWEEGO_PATH="$(pwd)/storyformats" ./tweego-bin/tweego -o dist/index.html src/story.twee
+          cp -R assets dist/assets
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
