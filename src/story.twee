@@ -42,7 +42,7 @@ Neko
 </div>
 
 :: StoryWidgets [widget]
-<<widget "scene">>>
+<<widget "scene">>
   <<print '<figure class="scene-media" data-scene-file="' + $args[0] + '" aria-label="' + $args[1] + '"><span class="scene-placeholder" aria-hidden="true"></span></figure>'>>
 <</widget>>
 
@@ -55,6 +55,8 @@ Neko
 }
 
 :: StoryScript [script]
+Config.debug = false;
+
 (() => {
   function initializeVariables() {
     const defaults = {
@@ -146,7 +148,7 @@ Neko
   }
 
   $(document).on(':passagerender', () => {
-    const isAlleyEntry = State.passage === 'Beco';
+    const isAlleyEntry = State.passage === 'Alley';
 
     loadSceneMedia();
 
@@ -231,6 +233,8 @@ Neko
   --gameboy-shell-red: #913b3b;
   --gameboy-screen: #a0b17f;
   --gameboy-ink: #26352b;
+  --link-color: #d6e68a;
+  --link-hover-color: #ffffff;
 }
 
 * {
@@ -442,21 +446,54 @@ body {
   margin: 0.65rem 0;
 }
 
-a {
+/* In-text passage links (links outside list buttons) */
+.passage a:not(li a),
+.passage a.link-internal:not(li a) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--link-color, #d6e68a) !important;
+  display: inline;
+  font-weight: 600;
+  padding: 0;
+  /* text-decoration: underline; */
+}
+
+.passage a:not(li a):hover,
+.passage a.link-internal:not(li a):hover {
+  background: transparent;
+  color: var(--link-hover-color, #ffffff) !important;
+  /* text-decoration: underline; */
+}
+
+/* Choice action buttons in lists */
+.passage li a,
+.passage li a.link-internal {
   background: #b5bad3;
   border: 2px solid var(--gameboy-shell-dark);
   border-radius: 0.3rem;
   box-shadow: 0 3px 0 var(--gameboy-shell-dark);
   color: var(--gameboy-ink) !important;
   display: block;
+  font-weight: normal;
   padding: 0.7rem 0.9rem;
   text-decoration: none;
 }
 
-a:hover {
+.passage li a:hover,
+.passage li a.link-internal:hover {
   background: #e2e5c7;
   color: #101c16 !important;
+  text-decoration: none;
   transform: translateY(1px);
+}
+
+/* Hide debug views and debug bar */
+#debug-bar,
+#debug-bar-hint,
+html[data-debug-view] .debug[data-name]::before,
+html[data-debug-view] .debug[data-name]::after {
+  display: none !important;
 }
 
 /* .passage blockquote {
@@ -590,277 +627,274 @@ Life on the street is often short and always difficult:
 
 In this game, you ''are'' one of them.
 
-* [[Start in the alley|Beco]]
+* [[Start in the alley|Alley]]
 
-:: Beco
+:: Alley
 <<scene "alley.mp4" "A city alley">>
 ! The Alley
 
 You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet. Only the sound of rain dripping from the rooftops and the occasional car passing by can be heard.
 
-You're an elegant, <<listbox "$gender" autoselect>><<option "female">><<option "male">><</listbox>> cat. You lick your <<listbox "$fur" autoselect>><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes" autoselect>><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, reflected in a puddle.
+You're an elegant, <<listbox "$gender">><<option "female">><<option "male">><</listbox>> cat. You lick your <<listbox "$fur">><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes">><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, reflected in a puddle.
 
-Your stomach growls, as you haven't eaten properly in two days. You must find food and water quickly. You also need to be careful, as the city is full of dangers, and not all humans are kind.
+Your stomach growls, as you haven't eaten properly in two days. You must find food and water quickly. You also need to be careful, as the city is full of dangers, and not all humans are [[kind|Alley - Leave]].
 
-* [[Procurar comida|Parque]]
-* [[Explorar a estação|estação de Comboios]]
-* [[Explorar o restaurante|Restaurante]]
+:: Alley - Leave
+<<scene "alley.mp4" "A city alley">>
+! The Alley
 
-:: Colonia de Gatos
-<<scene "suburbs.gif" "A cat colony">>
-! Colonia de gatos
+It's time to find something to eat. You start wandering the familiar streets of the quiet city. It's only a matter of time before it starts to get crowded.
 
-* [[Ficar com a colonia|Colonia - Ficar]]
-* [[Ir ter com um gato|Gato da Colonia]]
-* [[Sair da colonia|Parque]]
+You walf a few blocks and see a [[park|Park]] in the distance. 
 
-:: Colonia - Ficar
-<<scene "suburbs.gif" "A sheltered cat colony">>
-! Com cuidador
+:: Park
+<<scene "park.gif" "A city park">>
+! The Park
 
-* [[Ficar no gatil|Gatil]]
-* [[Aceitar ajuda de humanos|Adocao]]
+It is still pouring rain. You hear the sound of birds chirping in the distance, and you see a few people having a picnic under a tree. You also notice some cats wandering around, looking for food.
 
-:: Gato da Colonia
-<<scene "suburbs.gif" "Two cats sharing a space">>
-! Outro gato
+A bird is perched on a branch, and it looks like it might be a good meal.
 
-* [[Partilhar a comida|Colonia - Ficar]]
-* [[Afastar-te do gato|Parque]]
-* [[O gato tem FeLV|Doenca]]
+* [[You approach the humans|Park - Humans]]
+* [[You approach the bird|Park - Bird]]
 
-:: Gatil
-<<scene "restaurant.gif" "A cat shelter">>
-! Gatil
+:: Park - Humans
+<<scene "park.gif" "Humans in the park">>
+! The Park
 
-* [[Ficar no gatil|Gatil - Jaula]]
-* [[Aceitar esterilizacao|Esterilizacao]]
-* [[Ser adotado por humanos|Adocao]]
+You carefully approach the humans, hoping they might have some food for you. They notice you, however you're not sure they are friendly.
 
-:: Gatil - Jaula
-<<scene "restaurant.gif" "A cat waiting in a cage">>
-! Vida no gatil
+* [[Steal food|Park - Steal Food]] 
+* [[Meow for food|Park - Ask for food]]
 
-* [[Continuar no gatil|Gatil]]
-* [[Finalizar a historia|Final - Pouca Confianca]]
+:: Park - Steal Food
+<<scene "park.gif" "Stealing food from humans">>
+! The Park
 
-:: Adocao
-<<scene "restaurant.gif" "A quiet room with a human caregiver">>
-! Adocao por humanos
+You wait near the humans, and when they are distracted, you quickly snatch a piece of tuna from their picnic basket. The humans notice you, and they are not happy. With a mouth full of food, you ran as fast as you can, and you manage to escape. 
 
-* [[Ficar com os humanos|Final - Adotado]]
-* [[Fugir de volta para a rua|Beco]]
+The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
-:: Parque
-<<scene "suburbs.gif" "A city park">>
-! Parque
+* [[Explore the city|City]] 
+* [[Explore the suburbs|Suburbs]]
 
-* [[Caçar um passaro|Passaro]]
-* [[Procurar comida no parque|Piquenique]]
-* [[Aproximar-te dos gatos|Parque - Gatos]]
-* [[Sair do parque|Estação de Comboios]]
 
-:: Passaro
-<<scene "suburbs.gif" "A bird in the park">>
-! Objeto passaro
+:: Park - Ask for food
+<<scene "park.gif" "Asking for food from humans">>
+! The Park
 
-* [[Comer tudo|Final - Fome Controlada]]
-* [[Comer um bocado e levar o resto|Parque - Gatos]]
+You start meowing and purring at the humans, hoping they will give you some food. They notice you, and one of them takes pity on you. They give you a piece of tuna, which you gratefully accept.
 
-:: Piquenique
-<<scene "suburbs.gif" "People having a picnic">>
-! Humanos a fazer piquenique
+The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
-* [[Roubar comida|Roubar Comida]]
-* [[Pedir comida|Pedir Comida]]
-* [[Caçar por conta propria|Parque]]
+* [[Explore the city|City]] 
+* [[Explore the suburbs|Suburbs]]
 
-:: Roubar Comida
-<<scene "suburbs.gif" "Food left at a picnic">>
-! Roubar comida
+:: Park - Bird
+<<scene "park.gif" "A bird in the park">>
+! The Park
 
-* [[Comer e fugir|Parque]]
-* [[Continuar a explorar|estação de Comboios]]
+You carefully approach the bird, trying not to make any sudden movements. The bird notices you and starts to fly away. You chase after it, into the bushes...
 
-:: Pedir Comida
-<<scene "suburbs.gif" "A person noticing a stray cat">>
-! Pedir comida
+You successfully catch your prey. When you're about to sink your teeth into it, you hear a soft noise behind you. Another cat is watching you from a distance. It seems to be hungry too...
 
-* [[Receber comida|Final - Fome Controlada]]
-* [[As pessoas têm medo do gato|Parque]]
+* [[Eat it all|Park - Bird - Eat All]] 
+* [[Share it|Park - Bird - Share]]
 
-:: Parque - Gatos
-<<scene "suburbs.gif" "Cats crossing the park">>
-! Gatos aproximam-se
+:: Park - Bird - Eat All
+<<scene "park.gif" "A bird in the park">>
+! The Park
 
-* [[Partilhar a comida|Final - Confianca Gatos Alta]]
-* [[Comer sozinho|Final - Pouca Confianca]]
+You eat the bird all by yourself, and you feel satisfied. However, the other cat looks disappointed and walks away. You feel a bit guilty for not sharing.
 
-:: Restaurante
-<<scene "restaurant.gif" "A restaurant at night">>
-! Restaurante
+The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
-* [[Esperar pelo trabalhador|Trabalhador Restaurante]]
-* [[Ir para o beco ao lado|Beco do Restaurante]]
-* [[Continuar para a estação|estação de Comboios]]
+* [[Explore the city|City]] 
+* [[Explore the suburbs|Suburbs]]
 
-:: Beco do Restaurante
-<<scene "alley.mp4" "The alley beside a restaurant">>
-! Beco ao lado do restaurante
+:: Park - Bird - Share
+<<scene "park.gif" "A bird in the park">>
+! The Park
 
-* [[Comer do lixo|Comer do Lixo]]
-* [[Esperar|Trabalhador Restaurante]]
-* [[Ir para os suburbios|Suburbios]]
+You decide to let the other cat get close to you, and you share the bird with it. In a world where food is scarce, sharing is a risk but it can also be rewarding. The other cat seems grateful, and grooms you as a sign of trust.
 
-:: Trabalhador Restaurante
-<<scene "restaurant.gif" "A restaurant worker outside">>
-! Trabalhador do restaurante
+The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
-* [[Aceitar restos de peixe|Comer do Lixo]]
-* [[Deixar que se aproxime|Final - Confianca Humanos Alta]]
-* [[Fugir|Beco do Restaurante]]
+* [[Explore the city|City]] 
+* [[Explore the suburbs|Suburbs]]
 
-:: Comer do Lixo
-<<scene "alley.mp4" "A rubbish container behind a restaurant">>
-! Comer do lixo
+:: Suburbs
+<<scene "suburbs.gif" "The suburbs">>
+! The Suburbs
 
-* [[Comer o que encontrares|Final - Fome Controlada]]
-* [[Dormir junto ao lixo|Dormir na Rua]]
+Reaching the suburbs, you notice that the streets are quieter and less crowded. The houses are bigger, and there are more trees and gardens. It has stopped raining, however, the ground is still wet and muddy. A cold breeze is blowing.
 
-:: estação de Comboios
-<<scene "restaurant.gif" "A busy train station">>
-! estação de comboios
+You spot what looks like a squirrel in a tree. Instinctively, you start to chase it, but it quickly runs away. Before you're able to catch your breath, you hear a noise. It's a soft rustling in the bushes.
 
-* [[Pedir festinhas e comida|estação - Pedir]]
-* [[Ficar a observar as pessoas|estação - Observar]]
-* [[Sair da estação|Suburbios]]
+The sound of a branch breaking behind you makes you turn around. A dog is running towards you, barking loudly. You need to find a way to [[escape|Suburbs-Dog]].
 
-:: estação - Pedir
-<<scene "restaurant.gif" "Passengers moving through a station">>
-! Pedir ajuda na estação
 
-* [[Receber comida|Final - Fome Controlada]]
-* [[Nao receber comida suficiente|Final - Fome]]
-* [[Voltar para o beco|Beco]]
+:: Suburbs-Dog
+<<scene "suburbs-alley.gif" "The suburbs">>
+! The Suburbs
 
-:: estação - Observar
-<<scene "restaurant.gif" "A cat watching passengers">>
-! Observar pessoas
+After a long chase, you manage to escape the dog. You find yourself in a quiet street. Perhaps it's time to leave the Suburbs.
+However, before you head out, you notice you're thirsty. You see a puddle of water on the ground, perfect to quench your thirst.
 
-* [[Ficar na estação|estação - Pedir]]
-* [[Atravessar a estrada|Suburbios]]
+* [[Leave the suburbs|Suburbs-City]] 
+* [[Drink from the puddle|Water-Puddle]]
 
-:: Suburbios
-<<scene "suburbs.gif" "Quiet suburban streets">>
-! Suburbios
+:: Suburbs-City
+<<scene "suburbs.gif" "The suburbs">>
+! The Suburbs
 
-* [[Ficar nos suburbios|Suburbios - Casa]]
-* [[Continuar a explorar|Parque]]
-* [[Ir embora dos suburbios|Beco]]
+You decided to leave the Suburbs. Luckily, you found a few scraps of food and water dripping, enough to keep you going. You head to the [[city|City]], but you're starting to feel weak. 
 
-:: Suburbios - Casa
-<<scene "suburbs.gif" "A house garden in the suburbs">>
-! Casa nos suburbios
 
-* [[Beber agua de uma poça|Agua Contaminada]]
-* [[Beber agua de uma tigela|Final - Frio]]
-* [[Fugir do cão|Suburbios]]
+:: Water-Puddle
+<<scene "suburbs-alley.gif" "The suburbs">>
+! The Suburbs
 
-:: Agua Contaminada
-<<scene "suburbs.gif" "A puddle in a garden">>
-! Agua contaminada
+You drink from the puddle, and you feel a bit better. You find a few bushes to hide in, and you rest for a while. The wind keeps [[blowing...|Ending-Poisoned]]
 
-* [[Beber a agua|Final - Doenca]]
-* [[Continuar com sede|Final - Fome]]
+:: Ending-Poisoned
+<<scene "suburbs.gif" "The suburbs">>
+! The Suburbs
 
-:: Dormir na Rua
-<<scene "alley.mp4" "A cardboard box in an alley">>
-! Dormir na rua
+You fall asleep listening to the wind...
 
-* [[Esperar pela manha|Resgate]]
-* [[Procurar outro abrigo|Beco]]
+But you don't wake up. The puddle was poisoned with pesticide.
 
-:: Resgate
-<<scene "restaurant.gif" "A cat being taken to safety">>
-! Resgate
+You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the city.
 
-* [[Deixar que te levem|Brigada]]
-* [[Fugir|Beco]]
+Every year, x number of stray cats die from poisoned food and water.
 
-:: Brigada
-<<scene "restaurant.gif" "A veterinary rescue room">>
-! Brigada
+* [[Credits|Credits]]
 
-* [[Aceitar esterilizacao|Esterilizacao]]
-* [[Ficar numa jaula|Gatil - Jaula]]
+:: City
+<<scene "citycrowded.gif" "City">>
+! The City
 
-:: Esterilizacao
-<<scene "restaurant.gif" "A veterinary clinic">>
-! Esterilizacao
+After a long walk through the city streets, you find yourself noticing a certain weight on your fur. The rain has become snow. You sneeze. The cold is starting to get to you...
 
-* [[Recuperar no gatil|Gatil]]
-* [[Ser adotado|Adocao]]
+Search for a shelter is becoming more urgent. There are lights, sound and movement all around you. The city is fully awake, and the streets are crowded with people and cars. You're afraid.
 
-:: Final - Fome
-<<scene "alley.mp4" "An empty street">>
-! Morrer de fome
+Suddenly, you start smelling a delicious and warm aroma. It leads to a nearby restaurant. At the same time, you notice a train station, which could be a good place to find shelter. You also see a road that leads to the suburbs, where you might find a quieter place to rest. So many choices... Where should you go?
 
-//Evento de fim: hunger <= 0.//
+* [[Go to the restaurant|Restaurant]]
+* [[Enter the train station|Train Station]]
+* [[Keep exploring the city|City - Road]] 
 
-:: Final - Fome Controlada
-<<scene "alley.mp4" "A cat eating safely">>
-! Fome controlada
+:: Restaurant
+<<scene "restaurant.gif" "Restaurant">>
+! The Restaurant
 
-//Estado placeholder: hunger recupera.//
+*Sniff sniff* You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overwhelming, and your stomach growls in anticipation.
 
-* [[Continuar a explorar|Beco]]
+* [[Go around the back of the restaurant|Restaurant-Back]]
+* [[Stay around entrance|Restaurant-Front]]
 
-:: Doenca
-<<scene "restaurant.gif" "A sick cat in a quiet room">>
-! FeLV
+:: Restaurant-Back
+<<scene "restaurant.gif" "Restaurant">>
+! The Restaurant
 
-//Evento: o gato foi contagiado.//
+You look around, figuring where the tasty smell is coming from. Eventually, one of the white-uniform humans comes outside to take out the trash. As you reach the trash to look for scraps, he notices you.
 
-* [[Continuar apesar da doenca|Final - Doenca]]
+* [[You hide from him|Restaurant-Trash]]
+* [[You approach him|Restaurant-Waiter]]
 
-:: Final - Doenca
-<<scene "restaurant.gif" "A dark veterinary room">>
-! Morrer de doenca
 
-//Evento de fim: health <= 0 ou agua contaminada.//
+:: Restaurant-Waiter
+<<scene "restaurant.gif" "Restaurant">>
+! The Restaurant
 
-:: Final - Frio
-<<scene "alley.mp4" "A cold street after rain">>
-! Adoecer com o frio
+He briefly pets you and then goes inside for a moment.
 
-* [[Continuar|Final - Doenca]]
+* [[You wait for him|Restaurant-Food]]
+* [[You go back to the trash|Restaurant-Trash]]
 
-:: Final - Pouca Confianca
-<<scene "alley.mp4" "A solitary cat in the street">>
-! Pouca confianca
+:: Restaurant-Food
+<<scene "restaurant.gif" "Restaurant">>
+! The Restaurant
 
-//Estado: pouca confianca nos gatos e nos humanos.//
+The human comes back with a plate of food. He puts it down on the ground, gets up, and starts puffing smoke from his cigarette.
 
-* [[Continuar a explorar|Beco]]
+You quickly eat the food, and feel satisfied. With a belly full, you start feeling sleepy. There are a few boxes and crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
 
-:: Final - Confianca Gatos Alta
-<<scene "suburbs.gif" "Cats sharing food">>
-! Confianca gatos alta
+:: Restaurant-Trash
+<<scene "restaurant.gif" "Restaurant">>
+! The Restaurant
 
-//Estado: confianca nos gatos alta.//
+Your stomach growls, and you start rummaging through the trash. You find some scraps of food, but they are not enough to fill your belly, but it's better than nothing. After a long day, you find a box to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
 
-* [[Continuar a explorar|Colonia de Gatos]]
 
-:: Final - Confianca Humanos Alta
-<<scene "restaurant.gif" "A friendly human outside a restaurant">>
-! Confianca humanos alta
+:: Restaurant-Front
+<<scene "restaurant.gif" "City">>
+! The Restaurant
 
-//Estado: confianca nos humanos alta.//
+People are coming and going, people dressed in white uniforms are carrying trays of food. They seem to be busy, and you don't want to get in their way. After a while, some people start noticing you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
 
-* [[Aceitar ajuda|Adocao]]
+* [[Let them get close|Restaurant-Pet]]
+* [[Run away|Restaurant-Back]]
 
-:: Final - Adotado
-<<scene "restaurant.gif" "A safe home for a cat">>
-! Adotado
+:: Restaurant-Pet
+<<scene "restaurant.gif" "City">>
+! The Restaurant
 
-//Final placeholder: gato adotado.//
+The humans are friendly, and they start petting you. You feel a bit nervous, but you enjoy the attention. After a few minutes of snuggling, they end up leaving. Petting feels nice but it does not fill your belly.
+
+You decide to follow the strong smell of food, coming from the [[back...|Restaurant-Back]]
+
+:: Train Station
+<<scene "trainstation.gif" "City">>
+! The Train Station
+
+Last night you were so tired you don't even remember falling asleep. Apparently, you fell asleep in the train station, and you wake up to the sound of trains passing by.
+
+:: City - Road
+<<scene "citycrowded.gif" "City">>
+! The City
+
+You decide to keep exploring the city, there are cars, people, noise and movement all around you. You feel a bit scared, but you keep moving forward. The snow is falling heavily, and you start to feel cold. You need to find a place to rest and warm up. People are moving quickly.
+
+Someone steps on your tail, and you feel a sharp pain. You yelp in pain, but nobody notices. You try to run away, across the [[road...|Runover]]
+
+:: Runover
+<<scene "citycrowded.gif" "City">>
+! The City
+
+Suddenly, a car is coming towards you, and you can't get out of the way in time.
+
+You see a strong light approaching, and then everything goes [[black|Ending - Runover]].
+
+
+:: Ending - Runover
+<<scene "citycrowded.gif" "City">>
+! The City
+
+Every year, x number of stray cats die from being run over by cars.
+
+* [[Credits|Credits]]
+
+:: Human - Box
+<<scene "citycrowded.gif" "City">>
+! ???
+
+You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a box. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no avail...
+
+:: Credits
+<<scene "cat.gif" "Credits">>
+! Credits
+
+Thanks for playing Neko. This game was made to raise awareness about the life of stray cats, and the dangers they face every day.
+
+* [[Play Again|Alley]]
+
+Artwork:
+(meter links)
+
+Music:
+(meter links)
+
+Fonts:
+(meter links)
