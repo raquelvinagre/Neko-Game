@@ -293,7 +293,7 @@ body {
   display: block;
   box-shadow: inset 0 0 0 0.25rem #586c4d, 0 0.4rem 0 rgba(44, 49, 42, 0.7);
   height: clamp(240px, 38vw, 400px);
-  margin: 0 auto 0.5rem;
+  margin: 0 auto 0.35rem;
   max-width: 92%;
   overflow: hidden;
   position: relative;
@@ -401,6 +401,7 @@ body {
   font-size: clamp(1.35rem, 3vw, 1.8rem);
   font-weight: 500;
   line-height: 1.35;
+  margin: 0.35rem 0 0.5rem;
   min-width: 0;
   overflow: visible;
   width: 100%;
