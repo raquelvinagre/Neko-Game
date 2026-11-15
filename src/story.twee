@@ -37,6 +37,9 @@ Neko
     <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false">
       <span aria-hidden="true">♫</span> MUSIC: OFF
     </button>
+    <button id="restart-game" class="music-toggle" type="button">
+      <span aria-hidden="true">↺</span> RESTART
+    </button>
   </aside>
   <div id="passages"></div>
 </div>
@@ -57,23 +60,26 @@ Neko
 :: StoryScript [script]
 Config.debug = false;
 
+setup.initializeVariables = function () {
+  const defaults = {
+    health: 6,
+    hunger: 5,
+    trustCats: 5,
+    trustHumans: 3
+  };
+
+  Object.entries(defaults).forEach(([name, value]) => {
+    if (typeof State.variables[name] !== 'number') {
+      State.variables[name] = value;
+    }
+  });
+};
+
+setup.adjust = function (name, amount) {
+  State.variables[name] = Math.clamp(State.variables[name] + amount, 0, 10);
+};
+
 (() => {
-  function initializeVariables() {
-    const defaults = {
-      health: 7,
-      hunger: 5,
-      trustCats: 5,
-      trustHumans: 2
-    };
-
-    Object.entries(defaults).forEach(([name, value]) => {
-      if (typeof State.variables[name] !== 'number') {
-        State.variables[name] = value;
-      }
-    });
-  }
-
-  initializeVariables();
 
   function updateMusicButton(audio) {
     const button = document.getElementById('music-toggle');
@@ -217,6 +223,14 @@ Config.debug = false;
       updateMusicButton(audio);
     }
   });
+
+  $(document).on('click', '#restart-game', () => {
+    console.log('restart clicked');
+    // lowkey nsei pq mas so funfa se eu meter o console log
+    if (window.confirm('Restart the game? Your progress will be lost.')) {
+      Engine.restart();
+    }
+  });
 })();
 
 :: StoryStylesheet [stylesheet]
@@ -283,6 +297,7 @@ body {
   color: var(--gameboy-ink);
   font-size: 1.1em;
   line-height: 1.45;
+  text-align: justify;
 }
 
 .scene-media {
@@ -611,10 +626,27 @@ html[data-debug-view] .debug[data-name]::after {
   }
 }
 
+:: StoryInit
+<<run setup.initializeVariables()>>
+<<set $stoleParkFood to false>>
+<<set $askForParkFood to false>>
+<<set $eatAllParkBird to false>>
+<<set $shareParkBird to false>>
+<<set $runFromDog to false>>
+<<set $runFromDogToCity to false>>
+<<set $endingPoisoned to false>>
+<<set $cityCold to false>>
+<<set $workerPetYou to false>>
+<<set $workerFedYou to false>>
+<<set $frontPetYou to false>>
+<<set $eatFromRestaurantTrash to false>>
+<<set $cityRoadCold to false>>
+
+
+
 :: Start
 <figure class="scene-media scene-placeholder-only" aria-label="Game Boy screen"><span class="scene-placeholder" aria-hidden="true"></span></figure>
 ! Neko
-
 //A game about the life of a stray cat.//
 
 Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe.
@@ -633,26 +665,23 @@ In this game, you ''are'' one of them.
 :: Alley
 <<scene "alley.mp4" "A city alley">>
 ! The Alley
+You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet. Only the sound of water dripping from the air conditioning in the buildings and the occasional car passing by can be heard.
 
-You wake up in a narrow alley, with the nasty smell of garbage filling your nose. The past nights were long and cold. Now, the city is waking up around you, but the streets are still quiet. Only the sound of rain dripping from the rooftops and the occasional car passing by can be heard.
-
-You're an elegant, <<listbox "$gender">><<option "female">><<option "male">><</listbox>> cat. You lick your <<listbox "$fur">><<option "black">><<option "grey">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes">><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, reflected in a puddle.
+You're an elegant, <<listbox "$gender">><<option "female">><<option "male">><</listbox>> cat. You lick your <<listbox "$fur">><<option "black">><<option "gray">><<option "orange">><<option "white">><</listbox>> fur clean, stretch and get up. You walk down the alley, and see your <<listbox "$eyes">><<option "green">><<option "yellow">><<option "blue">><<option "gray">><</listbox>> eyes glowing, reflected in a puddle.
 
 Your stomach growls, as you haven't eaten properly in two days. You must find food and water quickly. You also need to be careful, as the city is full of dangers, and not all humans are [[kind|Alley - Leave]].
 
 :: Alley - Leave
 <<scene "alley.mp4" "A city alley">>
 ! The Alley
-
 It's time to find something to eat. You start wandering the familiar streets of the quiet city. It's only a matter of time before it starts to get crowded.
 
-You walf a few blocks and see a [[park|Park]] in the distance. 
+You walk a few blocks and see a [[park|Park]] in the distance. 
 
 :: Park
 <<scene "park.gif" "A city park">>
 ! The Park
-
-It is still pouring rain. You hear the sound of birds chirping in the distance, and you see a few people having a picnic under a tree. You also notice some cats wandering around, looking for food.
+You hear the sound of birds chirping in the distance, and you see a few people having a picnic under a tree. You also notice some cats wandering around, looking for food.
 
 A bird is perched on a branch, and it looks like it might be a good meal.
 
@@ -662,31 +691,51 @@ A bird is perched on a branch, and it looks like it might be a good meal.
 :: Park - Humans
 <<scene "park.gif" "Humans in the park">>
 ! The Park
-
 You carefully approach the humans, hoping they might have some food for you. They notice you, however you're not sure they are friendly.
 
-* [[Steal food|Park - Steal Food]] 
-* [[Meow for food|Park - Ask for food]]
+* [[Steal their food|Park - Steal Food]] 
+* [[Meow, pleading for food|Park - Ask for food]]
 
 :: Park - Steal Food
+<<if not $stoleParkFood>>
+  <<run setup.adjust("hunger", 2)>>
+  <<run setup.adjust("trustHumans", -2)>>
+  <<set $stoleParkFood to true>>
+<</if>>
 <<scene "park.gif" "Stealing food from humans">>
 ! The Park
-
 You wait near the humans, and when they are distracted, you quickly snatch a piece of tuna from their picnic basket. The humans notice you, and they are not happy. With a mouth full of food, you ran as fast as you can, and you manage to escape. 
 
-The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+//You ate well, but your trust in humans has been shown. (Hunger +2, Trust in Humans -2)//
+
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
 
 
 :: Park - Ask for food
+<<if not $askForParkFood>>
+  <<if $fur is "black">>
+    <<run setup.adjust("trustHumans", -2)>>
+  <<else>>
+    <<run setup.adjust("hunger", 2)>>
+    <<run setup.adjust("trustHumans", 2)>>
+  <</if>>
+  <<set $askForParkFood to true>>
+<</if>>
 <<scene "park.gif" "Asking for food from humans">>
 ! The Park
+<<if $fur is "black">>
+  You start meowing and purring at the humans, hoping they will give you some food. They notice you, and they seem scared and uncomfortable. They shoo you away, and you feel disappointed and run away from them.
 
+  //Black cats are often associated with bad luck, and humans are often wary of them. Your trust in humans has been damaged. (Trust in Humans -2)//
+<<else>>
 You start meowing and purring at the humans, hoping they will give you some food. They notice you, and one of them takes pity on you. They give you a piece of tuna, which you gratefully accept.
 
-The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+//You ate well, and your trust in humans has been shown. (Hunger +2, Trust in Humans +2)//
+<</if>>
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
@@ -694,32 +743,43 @@ The rain keeps falling, you're starting to feel cold and tired. You need to find
 :: Park - Bird
 <<scene "park.gif" "A bird in the park">>
 ! The Park
+You carefully approach the bird, trying not to make any sudden movements. The bird notices you and starts to fly away into the bushes. You chase after it...
 
-You carefully approach the bird, trying not to make any sudden movements. The bird notices you and starts to fly away. You chase after it, into the bushes...
-
-You successfully catch your prey. When you're about to sink your teeth into it, you hear a soft noise behind you. Another cat is watching you from a distance. It seems to be hungry too...
+You successfully catch your prey. When you're about to sink your teeth into it, you hear a soft noise behind you. Another cat is watching you from a distance. It seems to be hungry too.
 
 * [[Eat it all|Park - Bird - Eat All]] 
 * [[Share it|Park - Bird - Share]]
 
 :: Park - Bird - Eat All
+<<if not $eatAllParkBird>>
+  <<run setup.adjust("hunger", 3)>>
+  <<run setup.adjust("trustCats", -1)>>
+  <<set $eatAllParkBird to true>>
+<</if>>
 <<scene "park.gif" "A bird in the park">>
 ! The Park
-
 You eat the bird all by yourself, and you feel satisfied. However, the other cat looks disappointed and walks away. You feel a bit guilty for not sharing.
 
-The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+//You ate very well, but your trust in other cats has been shown. (Hunger +3, Trust in Cats -1)//
+
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
 
 :: Park - Bird - Share
+<<if not $shareParkBird>>
+  <<run setup.adjust("hunger", 2)>>
+  <<run setup.adjust("trustCats", 2)>>
+  <<set $shareParkBird to true>>
+<</if>>
 <<scene "park.gif" "A bird in the park">>
 ! The Park
+You decide to let the other cat get close to you, and you share the bird with it. In a world where food is scarce, sharing is a risk that can also be rewarding. The other cat seems grateful, and grooms you as a sign of trust.
 
-You decide to let the other cat get close to you, and you share the bird with it. In a world where food is scarce, sharing is a risk but it can also be rewarding. The other cat seems grateful, and grooms you as a sign of trust.
+//You ate well, and your trust in other cats has been shown. (Hunger +2, Trust in Cats +2)//
 
-The rain keeps falling, you're starting to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
@@ -727,60 +787,77 @@ The rain keeps falling, you're starting to feel cold and tired. You need to find
 :: Suburbs
 <<scene "suburbs.gif" "The suburbs">>
 ! The Suburbs
-
-Reaching the suburbs, you notice that the streets are quieter and less crowded. The houses are bigger, and there are more trees and gardens. It has stopped raining, however, the ground is still wet and muddy. A cold breeze is blowing.
+Reaching the suburbs, you notice that the streets are more quiet and less crowded. The houses are bigger, and there are more trees and gardens. It has stopped raining, however, the ground is wet and muddy. A cold breeze is blowing.
 
 You spot what looks like a squirrel in a tree. Instinctively, you start to chase it, but it quickly runs away. Before you're able to catch your breath, you hear a noise. It's a soft rustling in the bushes.
 
-The sound of a branch breaking behind you makes you turn around. A dog is running towards you, barking loudly. You need to find a way to [[escape|Suburbs-Dog]].
+The sound of a branch breaking behind you makes you turn around. A dog is running towards you, barking loudly. You need to find a way to [[escape|Suburbs - Dog]].
 
-
-:: Suburbs-Dog
+:: Suburbs - Dog
+<<if not $runFromDog>>
+  <<run setup.adjust("hunger", -2)>>
+  <<run setup.adjust("health", -2)>>
+  <<set $runFromDog to true>>
+<</if>>
 <<scene "suburbs-alley.gif" "The suburbs">>
 ! The Suburbs
-
 After a long chase, you manage to escape the dog. You find yourself in a quiet street. Perhaps it's time to leave the Suburbs.
-However, before you head out, you notice you're thirsty. You see a puddle of water on the ground, perfect to quench your thirst.
 
-* [[Leave the suburbs|Suburbs-City]] 
-* [[Drink from the puddle|Water-Puddle]]
+//Running from the dog has left you exhausted and hungry. You feel weak and tired. (Health -3, Hunger -2)//
 
-:: Suburbs-City
+However, before you head out, you see a puddle of water on the ground, and it triggers the instinct to drink it. The puddle seems perfect to quench your thirst.
+
+* [[Leave the suburbs|Suburbs - City]] 
+* [[Drink from the puddle|Water - Puddle]]
+
+:: Suburbs - City
+<<if not $runFromDogToCity>>
+  <<run setup.adjust("hunger", 1)>>
+  <<run setup.adjust("health", 1)>>
+  <<set $runFromDogToCity to true>>
+<</if>>
 <<scene "suburbs.gif" "The suburbs">>
 ! The Suburbs
+You decided to leave the Suburbs. Luckily, you found a soggy piece of bread on the floor, and a puddle of rain water, which were just enough to keep you going. It starts lightly raining again, as you head to the [[city|City]].
 
-You decided to leave the Suburbs. Luckily, you found a few scraps of food and water dripping, enough to keep you going. You head to the [[city|City]], but you're starting to feel weak. 
+//Eating the bread and drinking water has given you some energy. (Health +1, Hunger +1)//
 
-
-:: Water-Puddle
+:: Water - Puddle
 <<scene "suburbs-alley.gif" "The suburbs">>
-! The Suburbs
-
+! The Suburbs 
 You drink from the puddle, and you feel a bit better. You find a few bushes to hide in, and you rest for a while. The wind keeps [[blowing...|Ending-Poisoned]]
 
 :: Ending-Poisoned
+<<if not $endingPoisoned>>
+  <<run setup.adjust("health", -10)>>
+  <<set $endingPoisoned to true>>
+<</if>>
 <<scene "suburbs.gif" "The suburbs">>
 ! The Suburbs
-
 You fall asleep listening to the wind...
 
-But you don't wake up. The puddle was poisoned with pesticide.
+And the next time you wake up, you feel weak and dizzy. The puddle was poisoned with pesticides.
 
-You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the city.
+You try to find help, but you can't. You feel your body shutting down, and you know that this is the end. You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world.
 
-Every year, x number of stray cats die from poisoned food and water.
+//Every year, countless stray cats die from poisoned food and water. Nobody knows the true number, because most deaths are never recorded.//
 
 * [[Credits|Credits]]
 
 :: City
 <<scene "citycrowded.gif" "City">>
+<<if not $cityCold>>
+  <<run setup.adjust("health", -1)>>
+  <<set $cityCold to true>>
+<</if>>
 ! The City
+You leave the park, going to the heart of the city. After a long walk through the city streets, you find yourself noticing a certain weight on your fur. The rain has become snow. You sneeze. The cold is starting to get to you.
 
-After a long walk through the city streets, you find yourself noticing a certain weight on your fur. The rain has become snow. You sneeze. The cold is starting to get to you...
+//The cold makes you feel weak. (Health -1)//
 
-Search for a shelter is becoming more urgent. There are lights, sound and movement all around you. The city is fully awake, and the streets are crowded with people and cars. You're afraid.
+Searching for a shelter has become urgent. There are lights, sounds and movements all around you. The city is fully awake, and the streets are crowded with people and cars. You're afraid.
 
-Suddenly, you start smelling a delicious and warm aroma. It leads to a nearby restaurant. At the same time, you notice a train station, which could be a good place to find shelter. You also see a road that leads to the suburbs, where you might find a quieter place to rest. So many choices... Where should you go?
+Suddenly, you start smelling a delicious, warm and fishy aroma. It leads to a nearby restaurant. At the same time, you notice a train station, which could be a good place to find shelter. You also see a road that leads to the suburbs, where you might find a quieter place to rest. So many choices... Where should you go?
 
 * [[Go to the restaurant|Restaurant]]
 * [[Enter the train station|Train Station]]
@@ -789,98 +866,121 @@ Suddenly, you start smelling a delicious and warm aroma. It leads to a nearby re
 :: Restaurant
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
+"""*Sniff sniff*""" You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overflowing your mind, as you imagine yourself eating a big, juicy piece of fish, and your stomach growls in anticipation.
 
-*Sniff sniff* You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overwhelming, and your stomach growls in anticipation.
+* [[Go around to the back of the restaurant|Restaurant - Back]]
+* [[Stay around entrance|Restaurant - Front]]
 
-* [[Go around the back of the restaurant|Restaurant-Back]]
-* [[Stay around entrance|Restaurant-Front]]
-
-:: Restaurant-Back
+:: Restaurant - Back
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
+You walk around, trying to locate where the tasty smell is coming from. Eventually, you find and go down the alley that leads to the back of the restaurant. One of the white-uniform humans comes outside to take out the trash. As you approach the trash to look for scraps, he notices you.
 
-You look around, figuring where the tasty smell is coming from. Eventually, one of the white-uniform humans comes outside to take out the trash. As you reach the trash to look for scraps, he notices you.
-
-* [[You hide from him|Restaurant-Trash]]
-* [[You approach him|Restaurant-Waiter]]
+* [[You hide from him|Restaurant - Trash]]
+* [[You let him approach you|Restaurant - Worker]]
 
 
-:: Restaurant-Waiter
+:: Restaurant - Worker
+<<if not $workerPetYou>>
+  <<run setup.adjust("trustHumans", +1)>>  
+  <<set $workerPetYou to true>>
+<</if>>
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
-
 He briefly pets you and then goes inside for a moment.
 
-* [[You wait for him|Restaurant-Food]]
-* [[You go back to the trash|Restaurant-Trash]]
+//You feel a bit nervous, but you enjoy the attention and care. (Trust in Humans +1)//
 
-:: Restaurant-Food
+* [[You wait for him|Restaurant - Worker - Food]]
+* [[You go back to the trash|Restaurant - Trash]]
+
+:: Restaurant - Worker - Food
+<<if not $workerFedYou>>
+  <<run setup.adjust("hunger", +3)>>
+  <<run setup.adjust("trustHumans", +2)>>  
+  <<set $workerFedYou to true>>
+<</if>>
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
+The human comes back with a plate with pieces of fish bones and skin. He puts it down on the ground, gets up, and lights his cigarette. He starts puffing the smoke, looking at you.
 
-The human comes back with a plate of food. He puts it down on the ground, gets up, and starts puffing smoke from his cigarette.
+You quickly scrap the meat off the bones, and feel satisfied. 
 
-You quickly eat the food, and feel satisfied. With a belly full, you start feeling sleepy. There are a few boxes and crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+//You feel very satisfied. You also feel that, maybe, humans aren't so bad after all. (Hunger +3, Trust in Humans +2)//
 
-:: Restaurant-Trash
+With you belly full, you start feeling sleepy. There are a few cardboard boxes and wooden crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+
+:: Restaurant - Trash
+<<if not $eatFromRestaurantTrash>>
+  <<run setup.adjust("hunger", +1)>>
+  <<run setup.adjust("health", -1)>>  
+  <<set $eatFromRestaurantTrash to true>>
+<</if>>
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
+Your stomach growls, and you start rummaging through the trash. You find some scraps of food, but they are not enough to fill your belly.  
 
-Your stomach growls, and you start rummaging through the trash. You find some scraps of food, but they are not enough to fill your belly, but it's better than nothing. After a long day, you find a box to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+//You eat nasty food scraps from the trash. It is not tasty, but it is better than nothing. (Hunger +1, Health -1)//
 
+It's been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
 
-:: Restaurant-Front
+:: Restaurant - Front
 <<scene "restaurant.gif" "City">>
 ! The Restaurant
+People with big, fancy, furry coats are coming in and going out the restaurant's front doors. They seem busy, and you don't want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches. After a while, some people notice you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
 
-People are coming and going, people dressed in white uniforms are carrying trays of food. They seem to be busy, and you don't want to get in their way. After a while, some people start noticing you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
+* [[Let them get close|Restaurant - Front - Pet]]
+* [[Run away|Restaurant - Back]]
 
-* [[Let them get close|Restaurant-Pet]]
-* [[Run away|Restaurant-Back]]
-
-:: Restaurant-Pet
+:: Restaurant - Front - Pet
+<<if not $frontPetYou>>
+  <<run setup.adjust("trustHumans", +1)>>  
+  <<set $frontPetYou to true>>
+<</if>>
 <<scene "restaurant.gif" "City">>
 ! The Restaurant
+These humans are friendly, and they start petting you. After a few minutes of snuggling, they end up leaving. Petting feels nice but it does not fill your belly.
 
-The humans are friendly, and they start petting you. You feel a bit nervous, but you enjoy the attention. After a few minutes of snuggling, they end up leaving. Petting feels nice but it does not fill your belly.
+//You feel a bit nervous, but you enjoy the attention. (Trust in Humans +1)//
 
-You decide to follow the strong smell of food, coming from the [[back...|Restaurant-Back]]
+You decide to follow the strong smell of food, coming from the [[side alley of the restaurant|Restaurant - Back]].
 
 :: Train Station
 <<scene "trainstation.gif" "City">>
 ! The Train Station
-
 Last night you were so tired you don't even remember falling asleep. Apparently, you fell asleep in the train station, and you wake up to the sound of trains passing by.
+//meter aqui tipo qnd tu dormes e acordas q a comida vai pra baixo??//
 
 :: City - Road
+<<if not $cityRoadCold>>
+  <<run setup.adjust("health", -1)>>  
+  <<set $cityRoadCold to true>>
+<</if>>
 <<scene "citycrowded.gif" "City">>
 ! The City
+You decide to keep exploring the city. There are cars passing, trucks making noise getting the snow out of the road, people in big coats rushing... Lots of activity all around you. You feel a bit scared, but you keep moving forward. The snow is falling heavily, and you feel even colder than before. You need to hurry up and find a place to rest and warm up.
 
-You decide to keep exploring the city, there are cars, people, noise and movement all around you. You feel a bit scared, but you keep moving forward. The snow is falling heavily, and you start to feel cold. You need to find a place to rest and warm up. People are moving quickly.
+//The cold of the snow makes you feel even weaker. (Health -1)//
 
-Someone steps on your tail, and you feel a sharp pain. You yelp in pain, but nobody notices. You try to run away, across the [[road...|Runover]]
+Someone steps on your tail, and you feel a sharp pain. You yelp in pain, but nobody notices. You try to run away, running through the [[road...|Road - Runover]]
 
-:: Runover
+:: Road - Runover
 <<scene "citycrowded.gif" "City">>
 ! The City
+Suddenly, a car is coming towards you, and you can't get out of the way in time. The cold and icy road makes it hard for the driver to break in time.
 
-Suddenly, a car is coming towards you, and you can't get out of the way in time.
-
-You see a strong light approaching, and then everything goes [[black|Ending - Runover]].
-
+You try to run, but your body is too slow and stiff from the cold. You see a strong light approaching, and then everything goes [[black|Ending - Runover]].
 
 :: Ending - Runover
 <<scene "citycrowded.gif" "City">>
 ! The City
-
-Every year, x number of stray cats die from being run over by cars.
+Every year, countless stray cats are killed by cars. Roads are one of the biggest dangers for stray cats. Traffic is widely reported as a leading cause of death for free-roaming cats, especially in cities.
 
 * [[Credits|Credits]]
 
 :: Human - Box
 <<scene "citycrowded.gif" "City">>
 ! ???
-
 You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a box. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no avail...
 
 :: Credits
@@ -889,7 +989,7 @@ You suddenly wake up with a human picking you up. You feel a bit scared, but hav
 
 Thanks for playing Neko. This game was made to raise awareness about the life of stray cats, and the dangers they face every day.
 
-* [[Play Again|Alley]]
+* <<link "Play Again">><<run Engine.restart()>><</link>>
 
 Artwork:
 (meter links)
