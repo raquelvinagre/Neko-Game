@@ -1005,7 +1005,7 @@ It seems the cat lives in the station. Humans are kind enough to pet and feed it
 * [[Meet the cat|Train Station - Cat]]
 
 :: Train Station - Cat
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station.gif" "Train Station">>
 ! The Train Station
 You approach the other cat, perhaps a new friend. As you get close to the furry stranger, it seems to be a bit wary of you. You meow and purr, trying to show that you mean no harm. The other cat seems to understand you, and it starts to purr back. You feel a sense of relief and happiness, as you have found a new friend in this strange place. You realize that you are not alone in this world, and that there are other cats out there who are also struggling to survive. 
 
@@ -1015,26 +1015,28 @@ The other cat seems to have a small shelter and bowls for food and water. This c
 * [[Stay with the cat|Train Station - Cat - Part 2]]
 
 :: Train Station - Cat - Part 2
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station.gif" "Train Station">>
 ! The Train Station
 You decide to stay with your new friend. After all, it is good to have someone have your back in this world. The cat seems to be a permanent resident of the station. Humans regularly feed him. You share food and water. It isn't much, but it is enough to keep you going.
 
 You both become close. You share food, you groom each other, and you keep each other company. You feel a sense of belonging and companionship that you haven't felt in a long [[time...|Train Station - Cat - Part 3]]
 
 :: Train Station - Cat - Part 3
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-At first everything seems to be going well. You and your new friend are surviving together. However, as weeks pass by, you start feeling sick and weak. You both [[do...|Train Station - Cat - Part 4]]
+At first everything seems to be going well. You and your new friend are surviving together. However, as time passes by, you start feeling sick and weak. You both [[do...|Train Station - Cat - Part 4]]
 
 :: Train Station - Cat - Part 4
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-The other cat was sick with Feline Leukemia Virus (FeLV). You were also infected with the virus. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
+The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-One day, a human notices you and the other cat. You are both very weak. The human does not seem trustworhty. She has been staring at you for a while. Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape.
+One day, a human notices you and the other cat. You are both very weak. The human does not seem trustworhty. She has been staring at you for a while.
+
+Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape.
 
 She scoffs, and turns to you.
 
@@ -1044,7 +1046,7 @@ She scoffs, and turns to you.
 :: Train Station - Veterinary
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-You are too weak to run. You let her get close. The human picks you up and puts you in a box. You feel scared and confused, try to meow and escape, but to no [[avail...|Train Station - Ending - Disease]]
+You are too weak to run. You let her get close. The human picks you up and puts you in a box. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
 
 :: Train Station - Ending - Disease
 <<scene "trainstation.gif" "Train Station">>
@@ -1074,9 +1076,6 @@ You end up spending a few days in the train station, and you feel safe and cared
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
 Leaving the train station is a hard decision, but your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
-
-* [[Stay in the train station|Train Station - Leave]]
-* [[Meet the cat|Train Station - Cat]]
 
 :: Train Station - Stay
 <<scene "trainstation.gif" "Train Station">>
@@ -1129,9 +1128,77 @@ You try to run, but your body is too slow and stiff from the cold. You see a str
 * [[Credits|Credits]]
 
 :: Human - Box
-<<scene "citycrowded.gif" "City">>
-! ???
-You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a box. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no avail...
+<<scene "restaurant.gif" "City">>
+! The restaurant
+You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a box. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no [[avail...|Sterilization]]
+
+:: Sterilization
+<<scene "clinic.gif" "City">>
+! The Clinic
+You are now inside a room. You hear voices and noise outside. You are scared and don't know what is happening. You are given food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
+
+After a while, the humans pick you up, touch you and sting you. You still don't understand what is happening. Before you notice, you're back in the [[cage.|Sterilization - Part2]]
+
+:: Sterilization - Part2
+<<scene "clinic.gif" "City">>
+! The Clinic
+You wake up suddenly with someone entering the room. A human comes in and takes you.
+
+They sting you again, and then you feel [[sleepy once more...|Sterilization - Part3]]
+
+:: Sterilization - Part3
+<<scene "clinic.gif" "City">>
+! The Clinic
+Finally, you wake up, slowly. You feel dizzy, and in some pain. What has happened...?
+
+A few days go by... You are once again taken to another place. At this point you're getting used to not knowing what is happening. At least you have food, and you're not cold [[anymore...|Shelter]]
+
+:: Shelter
+<<scene "shelter.gif" "City">>
+! The Shelter
+This time, you're in a louder place. You hear dogs barking, cats meowing, and other noises. You are put in a room with other cats.
+
+Frases para os finais possíveis:
+- (confiança alta gatos) Since you are used to being around other cats, you feel happy to have some company. You start to play with the other cats, and you feel a sense of [[belonging|Shelter - Colony]].
+- (confiança baixa gatos) Since you are not used to being around other cats, you feel a bit uncomfortable. You try to avoid the other cats, you don't know if they are friendly or [[not|Shelter - Adopted]].
+- (ter FeLV) You were tested for Feline Leukemia Virus (FeLV), and the results came back positive. You are put in a separate room with other infected [[cats|Shelter - FeLV]].
+
+:: Shelter - Adopted
+<<scene "shelter.gif" "City">>
+! Adopted
+After some time in the shelter, you realize humans sometimes come and visit the cats. Sometimes they take one, and sometimes they leave.
+
+One day, a small human comes and notices you. You approach her and she pets you. She looks at the other humans and points at you. They seem to understand, and they take you [[home.|Adopted]]
+
+:: Adopted
+<<scene "adopted.webp" "City">>
+! Adopted
+They take you to a warm house, and give you food and water. You feel happy and safe. You are now a pet, and you have a family that loves you.
+
+//(frase informativa sobre quantos gatos na verdade são adotados e quantos ficam no abrigo)//
+
+* [[Credits|Credits]]
+
+:: Shelter - Colony
+<<scene "colony.jpg" "City">>
+! The Colony
+In the streets, you were used to being around other cats. You helped and asked for help. Now, you are part of a family of many like you. You are sterilized, have food, water and a warm place to sleep.
+
+You survived the difficult life of the streets, and can live a happy life in the colony.
+
+//(frase educativa sobre colónias)//
+
+* [[Credits|Credits]]
+
+:: Shelter - FeLV
+<<scene "shelter.gif" "City">>
+! The Shelter
+You end up having a normal life in the shelter. You are among others like you, that never end up having a family, as humans are usually scared to adopt them.
+
+//(meter aqui factos sobre estes gatos)//
+
+
+* [[Credits|Credits]]
 
 :: Credits
 <<scene "cat.gif" "Credits">>
