@@ -462,7 +462,11 @@ body {
   width: 5rem;
 }
 
-.scene-media + br {
+.scene-media ~ br:has(~ h1, ~ h2, ~ h3) {
+  display: none;
+}
+
+.passage > br:has(~ .scene-media) {
   display: none;
 }
 
@@ -963,7 +967,9 @@ It's been a long day. In this alley, you find a cardboardbox to curl up in and r
 :: Restaurant - Front
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
-People with big, fancy, furry coats are coming in and going out the restaurant's front doors. They seem busy, and you don't want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches. After a while, some people notice you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
+People with big, fancy, furry coats are coming in and going out the restaurant's front doors. They seem busy, and you don't want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches.
+
+After a while, some people notice you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
 
 * [[Let them get close|Restaurant - Front - Pet]]
 * [[Run away|Restaurant - Back]]

@@ -324,7 +324,11 @@ body {
   width: 5rem;
 }
 
-.scene-media + br {
+.scene-media ~ br:has(~ h1, ~ h2, ~ h3) {
+  display: none;
+}
+
+.passage > br:has(~ .scene-media) {
   display: none;
 }
 
@@ -977,7 +981,9 @@ Your stomach growls, and you start rummaging through the trash. You find some sc
 
 It&#39;s been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].</tw-passagedata><tw-passagedata pid="25" name="Restaurant - Front" tags="" position="600,350" size="100,100">&lt;&lt;scene &quot;restaurant.gif&quot; &quot;Restaurant&quot;&gt;&gt;
 ! The Restaurant
-People with big, fancy, furry coats are coming in and going out the restaurant&#39;s front doors. They seem busy, and you don&#39;t want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches. After a while, some people notice you and start getting closer. You&#39;re not sure if they are friendly or not. You have to make a decision quickly.
+People with big, fancy, furry coats are coming in and going out the restaurant&#39;s front doors. They seem busy, and you don&#39;t want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches.
+
+After a while, some people notice you and start getting closer. You&#39;re not sure if they are friendly or not. You have to make a decision quickly.
 
 * [[Let them get close|Restaurant - Front - Pet]]
 * [[Run away|Restaurant - Back]]</tw-passagedata><tw-passagedata pid="26" name="Restaurant - Front - Pet" tags="" position="725,350" size="100,100">&lt;&lt;if not $frontPetYou&gt;&gt;
