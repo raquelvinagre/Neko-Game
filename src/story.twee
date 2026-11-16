@@ -231,6 +231,15 @@ setup.adjust = function (name, amount) {
       Engine.restart();
     }
   });
+
+  const bgImg = new Image();
+  bgImg.src = 'assets/city.gif';
+  bgImg.onload = () => {
+    document.documentElement.style.setProperty('--bg-image', "url('assets/city.gif')");
+  };
+  bgImg.onerror = () => {
+    document.documentElement.style.setProperty('--bg-image', "url('../assets/city.gif')");
+  };
 })();
 
 :: StoryStylesheet [stylesheet]
@@ -247,8 +256,8 @@ setup.adjust = function (name, amount) {
   --gameboy-shell-red: #913b3b;
   --gameboy-screen: #a0b17f;
   --gameboy-ink: #26352b;
-  --link-color: #d6e68a;
-  --link-hover-color: #ffffff;
+  --link-hover-color: #c4cfaf;
+  --bg-image: url('../assets/city.gif');
 }
 
 * {
@@ -256,10 +265,14 @@ setup.adjust = function (name, amount) {
 }
 
 body {
-  background:
-    linear-gradient(rgba(126, 130, 163, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 50% 0%, #28263c 0, #15111d 42%, #06060a 100%);
-  background-size: 100% 5px, auto;
+  background-color: #0c0a14;
+  background-image:
+    linear-gradient(rgba(10, 12, 18, 0.65), rgba(10, 12, 18, 0.75)),
+    var(--bg-image, url('../assets/city.gif'));
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--ink);
   font-family: 'Segoe UI', Tahoma, sans-serif;
   font-size: 16px;
@@ -267,7 +280,7 @@ body {
 }
 
 #story {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 0 0.25rem 2rem;
 }
@@ -303,13 +316,14 @@ body {
 .scene-media {
   background: var(--gameboy-screen);
   border: 0.7rem solid #30372f;
+  border: 0.6rem solid #30372f;
   clear: both;
   border-radius: 0.3rem;
   display: block;
   box-shadow: inset 0 0 0 0.25rem #586c4d, 0 0.4rem 0 rgba(44, 49, 42, 0.7);
-  height: clamp(240px, 38vw, 400px);
+  height: clamp(180px, 26vw, 275px);
   margin: 0 auto 0.35rem;
-  max-width: 92%;
+  max-width: 86%;
   overflow: hidden;
   position: relative;
   visibility: visible;
@@ -412,9 +426,9 @@ body {
   align-items: center;
   gap: 0.8rem;
   justify-content: space-between;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: Courier New, monospace;
   font-size: clamp(1.35rem, 3vw, 1.8rem);
-  font-weight: 500;
+  font-weight: 2500;
   line-height: 1.35;
   margin: 0.35rem 0 0.5rem;
   min-width: 0;
@@ -448,8 +462,17 @@ body {
   width: 5rem;
 }
 
-.scene-media + h1, .scene-media + h2, .scene-media + h3 {
-  margin-top: 0;
+.scene-media + br {
+  display: none;
+}
+
+.scene-media + h1,
+.scene-media ~ h1,
+.scene-media + h2,
+.scene-media ~ h2,
+.scene-media + h3,
+.scene-media ~ h3 {
+  margin-top: 0.15rem;
 }
 
 .passage ul {
@@ -468,7 +491,7 @@ body {
   background: transparent;
   border: 0;
   box-shadow: none;
-  color: var(--link-color, #d6e68a) !important;
+  color: var(--gameboy-screen) !important;
   display: inline;
   font-weight: 600;
   padding: 0;
@@ -519,12 +542,18 @@ html[data-debug-view] .debug[data-name]::after {
 } */
 
 .status-panel {
-  color: var(--muted);
+  background: linear-gradient(135deg, #929784, var(--gameboy-shell) 58%, #686e61);
+  border: 2px solid var(--gameboy-shell-dark);
+  border-radius: 0.75rem;
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(219, 224, 194, 0.18);
+  color: var(--gameboy-ink);
   display: grid;
   font-family: 'Courier New', monospace;
   font-size: 0.7rem;
+  font-weight: 700;
   gap: 0.75rem;
   grid-template-columns: 1fr;
+  padding: 0.9rem;
   width: 100%;
 }
 
@@ -541,13 +570,18 @@ html[data-debug-view] .debug[data-name]::after {
 }
 
 .status-label {
+  color: var(--gameboy-ink);
   display: flex;
+  font-weight: 700;
   justify-content: space-between;
 }
 
 .status-icon {
-  border: 1px solid var(--steel);
-  color: var(--muted);
+  background: var(--gameboy-screen);
+  border: 1.5px solid #30372f;
+  border-radius: 0.25rem;
+  box-shadow: inset 0 0 0 1px #586c4d;
+  color: var(--gameboy-ink);
   display: inline-block;
   flex: 0 0 1.8rem;
   font-size: 0.45rem;
@@ -560,24 +594,27 @@ html[data-debug-view] .debug[data-name]::after {
 
 .status-icon img {
   display: block;
-  filter: invert(78%) sepia(10%) saturate(450%) hue-rotate(160deg);
+  filter: brightness(0) opacity(0.85);
   height: 1.2rem;
   margin: 0.25rem;
   width: 1.2rem;
 }
 
 .status-bar {
-  background: var(--street);
-  border: 1px solid var(--steel);
+  background: #30372f;
+  border: 1.5px solid #20251f;
+  border-radius: 0.2rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
   display: block;
-  height: 0.5rem;
+  height: 0.55rem;
   margin-top: 0.3rem;
   overflow: hidden;
   width: 100%;
 }
 
 .status-fill {
-  background: var(--blue);
+  background: var(--gameboy-screen);
+  box-shadow: 0 0 4px rgba(160, 177, 127, 0.4);
   display: block;
   height: 100%;
   transition: width 180ms ease;
@@ -585,27 +622,30 @@ html[data-debug-view] .debug[data-name]::after {
 }
 
 .status-panel b {
-  color: var(--blue-light);
+  color: var(--gameboy-ink);
   font-size: 0.9rem;
 }
 
 .music-toggle {
-  background: var(--street);
-  border: 1px solid var(--steel);
-  color: var(--blue-light);
+  background: #b5bad3;
+  border: 2px solid var(--gameboy-shell-dark);
+  border-radius: 0.3rem;
+  box-shadow: 0 3px 0 var(--gameboy-shell-dark);
+  color: var(--gameboy-ink);
   cursor: pointer;
   font-family: 'Courier New', monospace;
   font-size: 0.7rem;
-  margin-top: 1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
   padding: 0.7rem 0.8rem;
-  transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease;
   width: 100%;
 }
 
 .music-toggle:hover, .music-toggle[aria-pressed='true'] {
-  background: #2f263e;
-  box-shadow: 0 0 12px rgba(99, 103, 163, 0.25);
-  color: #fff;
+  background: #e2e5c7;
+  color: #101c16;
+  transform: translateY(1px);
 }
 
 @media (max-width: 600px) {
@@ -649,17 +689,13 @@ html[data-debug-view] .debug[data-name]::after {
 ! Neko
 //A game about the life of a stray cat.//
 
-Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe.
-
-Life on the street is often short and difficult:
-
+Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe. Life on the street is often short and difficult:
 * ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
 * ''Disease:'' Without vaccines or veterinary care, infections spread easily, especially in winter.
-* ''Danger:'' Traffic, cruelty, poison, other animals and extreme weather are constant threats.
+* ''Danger:'' Traffic, cruelty, poison, predators and extreme weather are constant threats.
 * ''Fast reproduction:'' One unsterilized female can have multiple litters a year, and many kittens do not survive. This is why sterilization programs are important.
 
 In this game, you ''are'' one of them.
-
 * [[Start|Alley]]
 
 :: Alley
