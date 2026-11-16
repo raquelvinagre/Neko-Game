@@ -651,7 +651,7 @@ html[data-debug-view] .debug[data-name]::after {
 
 Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe.
 
-Life on the street is often short and always difficult:
+Life on the street is often short and difficult:
 
 * ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
 * ''Disease:'' Without vaccines or veterinary care, infections spread easily, especially in winter.
@@ -660,7 +660,7 @@ Life on the street is often short and always difficult:
 
 In this game, you ''are'' one of them.
 
-* [[Start in the alley|Alley]]
+* [[Start|Alley]]
 
 :: Alley
 <<scene "alley.mp4" "A city alley">>
@@ -840,7 +840,7 @@ And the next time you wake up, you feel weak and dizzy. The puddle was poisoned 
 
 You try to find help, but you can't. You feel your body shutting down, and you know that this is the end. You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world.
 
-//Every year, countless stray cats die from poisoned food and water. Nobody knows the true number, because most deaths are never recorded.//
+//Every year, countless stray cats die from poisoned food and water. The exact number is unknown, as most deaths are never recorded.//
 
 * [[Credits|Credits]]
 
@@ -866,7 +866,7 @@ Suddenly, you start smelling a delicious, warm and fishy aroma. It leads to a ne
 :: Restaurant
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
-"""*Sniff sniff*""" You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overflowing your mind, as you imagine yourself eating a big, juicy piece of fish, and your stomach growls in anticipation.
+//Sniff sniff// You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overflowing your mind, as you imagine yourself eating a big, juicy piece of fish, and your stomach growls in anticipation.
 
 * [[Go around to the back of the restaurant|Restaurant - Back]]
 * [[Stay around entrance|Restaurant - Front]]
@@ -925,7 +925,7 @@ Your stomach growls, and you start rummaging through the trash. You find some sc
 It's been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
 
 :: Restaurant - Front
-<<scene "restaurant.gif" "City">>
+<<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
 People with big, fancy, furry coats are coming in and going out the restaurant's front doors. They seem busy, and you don't want to get in their way. You look inside through the glass windows, and you see people dressed in white uniforms carrying metal trays, some with food, some covered in cloches. After a while, some people notice you and start getting closer. You're not sure if they are friendly or not. You have to make a decision quickly.
 
@@ -937,7 +937,7 @@ People with big, fancy, furry coats are coming in and going out the restaurant's
   <<run setup.adjust("trustHumans", +1)>>  
   <<set $frontPetYou to true>>
 <</if>>
-<<scene "restaurant.gif" "City">>
+<<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
 These humans are friendly, and they start petting you. After a few minutes of snuggling, they end up leaving. Petting feels nice but it does not fill your belly.
 
@@ -946,10 +946,117 @@ These humans are friendly, and they start petting you. After a few minutes of sn
 You decide to follow the strong smell of food, coming from the [[side alley of the restaurant|Restaurant - Back]].
 
 :: Train Station
-<<scene "trainstation.gif" "City">>
+<<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-Last night you were so tired you don't even remember falling asleep. Apparently, you fell asleep in the train station, and you wake up to the sound of trains passing by.
+Last night you were so tired you don't even remember falling asleep. Apparently, you spent the night in the train station, and you wake up to the sound of trains passing by.
 //meter aqui tipo qnd tu dormes e acordas q a comida vai pra baixo??//
+
+Water is still falling from the sky, although you feel warmer today. You stretch and start walking around the station. There are a few humans around, some are sitting on benches, others are running around. Strange [[creatures|Train Station - Cat or Humans]] they are. 
+
+:: Train Station - Cat or Humans
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+After wondering for a while, you find another cat, who seems to be a stray like you. It looks at you and meows. You meow back, and it seems to understand you.
+It seems the cat lives in the station. Humans are kind enough to pet and feed it. Who should you go meet?
+
+* [[Meet the humans|Train Station - Humans]]
+* [[Meet the cat|Train Station - Cat]]
+
+:: Train Station - Cat
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You approach the other cat, perhaps a new friend. As you get close to the furry stranger, it seems to be a bit wary of you. You meow and purr, trying to show that you mean no harm. The other cat seems to understand you, and it starts to purr back. You feel a sense of relief and happiness, as you have found a new friend in this strange place. You realize that you are not alone in this world, and that there are other cats out there who are also struggling to survive. 
+
+The other cat seems to have a small shelter and bowls for food and water. This could mean that humans are kind enough to feed it. Should you stay and share the food with the other cat, or should you go meet the humans and see if they will feed you too?
+
+* [[Leave the cat and meet the humans|Train Station - Humans]]
+* [[Stay with the cat|Train Station - Cat - Part 2]]
+
+:: Train Station - Cat - Part 2
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You decide to stay with your new friend. After all, it is good to have someone have your back in this world. The cat seems to be a permanent resident of the station. Humans regularly feed him. You share food and water. It isn't much, but it is enough to keep you going.
+
+You both become close. You share food, you groom each other, and you keep each other company. You feel a sense of belonging and companionship that you haven't felt in a long [[time...|Train Station - Cat - Part 3]]
+
+:: Train Station - Cat - Part 3
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+At first everything seems to be going well. You and your new friend are surviving together. However, as weeks pass by, you start feeling sick and weak. You both [[do...|Train Station - Cat - Part 4]]
+
+:: Train Station - Cat - Part 4
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+The other cat was sick with Feline Leukemia Virus (FeLV). You were also infected with the virus. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
+
+:: Train Station - Cat - Part 5
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+One day, a human notices you and the other cat. You are both very weak. The human does not seem trustworhty. She has been staring at you for a while. Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape.
+
+She scoffs, and turns to you.
+
+* [[You run from her|Train Station - Ending - Disease]]
+* [[You let her get close|Train Station - Veterinary]]
+
+:: Train Station - Veterinary
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You are too weak to run. You let her get close. The human picks you up and puts you in a box. You feel scared and confused, try to meow and escape, but to no [[avail...|Train Station - Ending - Disease]]
+
+:: Train Station - Ending - Disease
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You used your last bit of energy to try to escape. After just a few moments, you realize you are too weak to continue. You end up collapsing, nearby the station. You feel your body shutting down.
+
+You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world. Feline Leukemia Virus (FeLV) is a serious disease that affects cats, and it can be fatal.
+
+//Every year, countless stray cats die from FeLV. The true number is unknown, as most deaths are never recorded.//
+
+* [[Credits|Credits]]
+
+:: Train Station - Humans
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+The humans are kind enough to pet and feed the other cat. They should be kind to you too. You approach them, and they notice you and pet you. After interacting with a few of the tall humans, one one of them decides to feed you. You feel happy and satisfied. You also feel that, maybe, humans aren't so bad [[after all|Train Station - Humans - Part 2]].
+
+:: Train Station - Humans - Part 2
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You end up spending a few days in the train station, and you feel safe and cared for. You have a roof over your head, which makes you feel secure. However, food is never a guarantee. Some days you are lucky, and some days you are not...
+
+* [[Stay in the train station|Train Station - Stay]]
+* [[Leave the train station|Train Station - Leave]]
+
+:: Train Station - Leave
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+Leaving the train station is a hard decision, but your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
+
+* [[Stay in the train station|Train Station - Leave]]
+* [[Meet the cat|Train Station - Cat]]
+
+:: Train Station - Stay
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You decide to stay in the station. After all, it is a safe place.
+
+Days pass... This is the closest to a home you have ever felt. But you are skinnier by the day. You never know when a piece of food will come your way, and you are always [[hungry...|Train Station - Stay - Part 2]]
+
+
+:: Train Station - Stay - Part 2
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+After a few weeks, you start to feel weak and sick. There aren't as many humans around, and the food is scarce. You fear this might be the end. You try to find a way to get food, but you are too [[weak|Train Station - Ending - Hunger]] to move.
+
+:: Train Station - Ending - Hunger
+<<scene "trainstation.gif" "Train Station">>
+! The Train Station
+You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world. Hunger is one of the biggest threats to stray cats, and it is often fatal.
+
+//Every year, countless stray cats die from hunger and starvation. The true number is unknown, as most deaths are never recorded.//
+
+* [[Credits|Credits]]
 
 :: City - Road
 <<if not $cityRoadCold>>
@@ -974,7 +1081,8 @@ You try to run, but your body is too slow and stiff from the cold. You see a str
 :: Ending - Runover
 <<scene "citycrowded.gif" "City">>
 ! The City
-Every year, countless stray cats are killed by cars. Roads are one of the biggest dangers for stray cats. Traffic is widely reported as a leading cause of death for free-roaming cats, especially in cities.
+
+//Every year, countless stray cats are killed by cars. Roads are one of the biggest dangers for stray cats. Traffic is widely reported as a leading cause of death for free-roaming cats, especially in cities.//
 
 * [[Credits|Credits]]
 
