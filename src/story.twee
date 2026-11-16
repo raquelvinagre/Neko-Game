@@ -1008,8 +1008,9 @@ Water is still falling from the sky, although you feel warmer today. You stretch
 :: Train Station - Cat or Humans
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-After wondering for a while, you find another cat, who seems to be a stray like you. It looks at you and meows. You meow back, and it seems to understand you.
-It seems the cat lives in the station. Humans are kind enough to pet and feed it. Who should you go meet?
+After wandering for a while, you find another cat, who seems to be a stray like you. It looks at you and meows. You meow back, and it seems to understand you.
+
+It looks like the cat lives in the station. Humans are kind enough to pet and feed it. Who should you go meet?
 
 * [[Meet the humans|Train Station - Humans]]
 * [[Meet the cat|Train Station - Cat]]
@@ -1039,14 +1040,16 @@ At first everything seems to be going well. You and your new friend are survivin
 :: Train Station - Cat - Part 4
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
+The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus, as it is spread by sharing food, bitting, grooming, and other close contact. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-One day, a human notices you and the other cat. You are both very weak. The human does not seem trustworhty. She has been staring at you for a while.
+One day, a human passing by the station notices you and your friend. You are both very weak.
 
-Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape.
+She seems to be studying you, although you are not sure why. She does not seem trustworhty...
+
+Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape. It all happened so fast, you are not sure what to do.
 
 She scoffs, and turns to you.
 
@@ -1056,14 +1059,14 @@ She scoffs, and turns to you.
 :: Train Station - Veterinary
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-You are too weak to run. You let her get close. The human picks you up and puts you in a box. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
+You are too weak to run, so you let her get close. The human picks you up and puts you in a box. All of this makes you feel even more vulnerable. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
 
 :: Train Station - Ending - Disease
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-You used your last bit of energy to try to escape. After just a few moments, you realize you are too weak to continue. You end up collapsing, nearby the station. You feel your body shutting down.
+You used your last bit of energy to try to escape. After just a few moments, you realize you are too weak to continue. You end up collapsing, nearby the station, feeling your body shut down.
 
-You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world. Feline Leukemia Virus (FeLV) is a serious disease that affects cats, and it can be fatal.
+You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't overcome the dangers of the streets. Feline Leukemia Virus (FeLV) is a serious disease that affects cats, and it can be fatal, specially in stray cats, as they don't have access to veterinary care.
 
 //Every year, countless stray cats die from FeLV. The true number is unknown, as most deaths are never recorded.//
 
@@ -1072,7 +1075,7 @@ You were a stray cat, and your life was hard. You were a survivor, but in the en
 :: Train Station - Humans
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-The humans are kind enough to pet and feed the other cat. They should be kind to you too. You approach them, and they notice you and pet you. After interacting with a few of the tall humans, one one of them decides to feed you. You feel happy and satisfied. You also feel that, maybe, humans aren't so bad [[after all|Train Station - Humans - Part 2]].
+The humans are kind enough to pet and feed the other cat. So you assume they should be kind to you too. You approach them, and they notice you and pet you. After interacting with a few of the tall humans, one one of them decides to feed you. You feel happy and satisfied. Perhaps, humans aren't so bad [[after all|Train Station - Humans - Part 2]].
 
 :: Train Station - Humans - Part 2
 <<scene "trainstation.gif" "Train Station">>
@@ -1098,12 +1101,12 @@ Days pass... This is the closest to a home you have ever felt. But you are skinn
 :: Train Station - Stay - Part 2
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-After a few weeks, you start to feel weak and sick. There aren't as many humans around, and the food is scarce. You fear this might be the end. You try to find a way to get food, but you are too [[weak|Train Station - Ending - Hunger]] to move.
+After a few weeks, you start to feel weak and sick. There aren't as many humans around, and the food is scarce. As you stare at the less crowded station, you fear this might be the end. You keep trying to find a ways to get food, but you are too [[weak|Train Station - Ending - Hunger]] to move.
 
 :: Train Station - Ending - Hunger
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world. Hunger is one of the biggest threats to stray cats, and it is often fatal.
+You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't overcome the dangers of the streets. Hunger is one of the biggest threats to stray cats. Relying on scraps, rubbish and occasional kindness, food is unreliable and often unsafe. Many stray cats die from starvation, especially in winter.
 
 //Every year, countless stray cats die from hunger and starvation. The true number is unknown, as most deaths are never recorded.//
 
@@ -1145,9 +1148,11 @@ You suddenly wake up with a human picking you up. You feel a bit scared, but hav
 :: Sterilization
 <<scene "clinic.gif" "City">>
 ! The Clinic
-You are now inside a room. You hear voices and noise outside. You are scared and don't know what is happening. You are given food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
+You are now inside a room. There are different voices and noise outside, which makes you feel scared. You don't know what is happening...
 
-After a while, the humans pick you up, touch you and sting you. You still don't understand what is happening. Before you notice, you're back in the [[cage.|Sterilization - Part2]]
+Eventually, someone reaches and softly touches you. They carefully offer you some food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
+
+After a while, the humans come back. They pick you up, touch you and sting you. You still don't understand what is happening. Before you notice, you're back in the [[cage.|Sterilization - Part2]]
 
 :: Sterilization - Part2
 <<scene "clinic.gif" "City">>
@@ -1161,7 +1166,7 @@ They sting you again, and then you feel [[sleepy once more...|Sterilization - Pa
 ! The Clinic
 Finally, you wake up, slowly. You feel dizzy, and in some pain. What has happened...?
 
-A few days go by... You are once again taken to another place. At this point you're getting used to not knowing what is happening. At least you have food, and you're not cold [[anymore...|Shelter]]
+A few days go by... You are once again taken to another place. At this point you're getting used to this routine. At least you have food, and you're not cold [[anymore...|Shelter]]
 
 :: Shelter
 <<scene "shelter.gif" "City">>
