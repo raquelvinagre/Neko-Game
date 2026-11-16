@@ -79,6 +79,8 @@ setup.adjust = function (name, amount) {
   State.variables[name] = Math.clamp(State.variables[name] + amount, 0, 10);
 };
 
+setup.musicVolume = 0.1;
+
 (() => {
 
   function updateMusicButton(audio) {
@@ -188,21 +190,28 @@ setup.adjust = function (name, amount) {
     }
 
     let audio = document.getElementById('background-music');
+    const shouldStartMusic = !audio;
     if (!audio) {
       audio = document.createElement('audio');
       audio.id = 'background-music';
       audio.loop = true;
       audio.preload = 'none';
-      audio.src = 'assets/background-music.mp3';
+      audio.src = 'assets/music.mp3';
       audio.addEventListener('error', () => {
-        if (audio.src.endsWith('/assets/background-music.mp3')) {
-          audio.src = '../assets/background-music.mp3';
+        if (audio.src.endsWith('/assets/music.mp3')) {
+          audio.src = '../assets/music.mp3';
         }
       }, { once: true });
       document.body.appendChild(audio);
     }
 
+    if (shouldStartMusic) {
+      audio.volume = Math.max(0, Math.min(1, setup.musicVolume));
+    }
     updateMusicButton(audio);
+    if (shouldStartMusic) {
+      audio.play().then(() => updateMusicButton(audio)).catch(() => updateMusicButton(audio));
+    }
   });
 
   $(document).on(':passageend', updateStatusBars);
@@ -1027,12 +1036,12 @@ You both become close. You share food, you groom each other, and you keep each o
 At first everything seems to be going well. You and your new friend are surviving together. However, as time passes by, you start feeling sick and weak. You both [[do...|Train Station - Cat - Part 4]]
 
 :: Train Station - Cat - Part 4
-<<scene "cat-station.gif" "Train Station">>
+<<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
-<<scene "cat-station.gif" "Train Station">>
+<<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 One day, a human notices you and the other cat. You are both very weak. The human does not seem trustworhty. She has been staring at you for a while.
 
@@ -1044,12 +1053,12 @@ She scoffs, and turns to you.
 * [[You let her get close|Train Station - Veterinary]]
 
 :: Train Station - Veterinary
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 You are too weak to run. You let her get close. The human picks you up and puts you in a box. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
 
 :: Train Station - Ending - Disease
-<<scene "trainstation.gif" "Train Station">>
+<<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 You used your last bit of energy to try to escape. After just a few moments, you realize you are too weak to continue. You end up collapsing, nearby the station. You feel your body shutting down.
 
@@ -1165,8 +1174,8 @@ Frases para os finais possíveis:
 
 :: Shelter - Adopted
 <<scene "shelter.gif" "City">>
-! Adopted
-After some time in the shelter, you realize humans sometimes come and visit the cats. Sometimes they take one, and sometimes they leave.
+! The Shelter
+After some time in the shelter, you realize humans sometimes come and visit the cats. Sometimes they take one, and sometimes they simply leave.
 
 One day, a small human comes and notices you. You approach her and she pets you. She looks at the other humans and points at you. They seem to understand, and they take you [[home.|Adopted]]
 
@@ -1186,7 +1195,7 @@ In the streets, you were used to being around other cats. You helped and asked f
 
 You survived the difficult life of the streets, and can live a happy life in the colony.
 
-//(frase educativa sobre colónias)//
+//(frase educativa sobre colónias) Animals can be sterilized to prevent overpopulation and reduce the number of stray cats on the streets.//
 
 * [[Credits|Credits]]
 
@@ -1209,10 +1218,26 @@ Thanks for playing Neko. This game was made to raise awareness about the life of
 * <<link "Play Again">><<run Engine.restart()>><</link>>
 
 Artwork:
-(meter links)
+https://www.flaticon.com/
+https://wallpaperaccess.com/full/6604090.gif
+https://pixelarttenten.tumblr.com/image/187753525251
+https://wallpaperaccess.com/japanese-pixel-art
+https://tenor.com/view/cat-kiss-gif-26499778
+https://i.pinimg.com/736x/52/83/59/5283594dd6b1d0dd4b8a59c723a35024.jpg
+https://64.media.tumblr.com/334a9aab0c71101bf5bb3c92016ea5f5/3fa9b1d6880ffbc4-28/s1280x1920/6ac015427b3994a5f95d85b27b3b1b2c6af34bb1.gif
+https://64.media.tumblr.com/fef80ff74af6271d79b7b7af6c0decf1/69b5982fe70c1533-37/s1280x1920/22589b95e57c142f11ef100db03a8b9950201f97.gif
+https://i.pinimg.com/originals/1e/7d/d6/1e7dd6800a6ad9862861c878cfcc2fb2.gif~
+http://i.pinimg.com/originals/34/16/fc/3416fc4113b69a0bf1cc75a772c4b5c4.gif
+https://i.pinimg.com/originals/7d/04/0e/7d040e94931427709008aaeda14db9c8.gif
+https://id.pinterest.com/pin/1087900853740029266/
 
 Music:
-(meter links)
+https://pixabay.com/music/modern-classical-180128-piano-ennui-nostalgic-emotional-lofi-96266/
 
 Fonts:
-(meter links)
+https://animalofthings.com/stray-animals/
+https://en.wikipedia.org/wiki/Feral_cat
+https://valorlocal.pt/gatos-rua-portugal-microchip-identificacao-abandono/
+https://www.tveuropa.pt/noticias/mais-de-800-mil-gatos-vivem-na-rua-em-portugal-onde-a-falta-de-microchip-limita-a-protecao-do-animal-e-da-comunidade/
+https://animaisderua.org/pt/ced
+https://www.abcdcatsvets.org/guideline-for-feline-leukaemia-virus-infection/
