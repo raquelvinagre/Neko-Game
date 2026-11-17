@@ -958,7 +958,7 @@ You quickly scrap the meat off the bones, and feel satisfied.
 
 //You feel very satisfied. You also feel that, maybe, humans aren't so bad after all. (Hunger +3, Trust in Humans +2)//
 
-With you belly full, you start feeling sleepy. There are a few cardboard boxes and wooden crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+With your belly full, you start feeling sleepy. There are a few cardboard boxes and wooden crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
 
 :: Restaurant - Trash
 <<if not $eatFromRestaurantTrash>>
