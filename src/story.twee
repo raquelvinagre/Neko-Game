@@ -695,6 +695,17 @@ html[data-debug-view] .debug[data-name]::after {
 <<set $frontPetYou to false>>
 <<set $eatFromRestaurantTrash to false>>
 <<set $cityRoadCold to false>>
+<<set $sleepInTrainStation to false>>
+<<set $metCatInTrainStation to false>>
+<<set $eatFromCatInTrainStation to false>>
+<<set $feelWeakInStation to false>>
+<<set $feelWeakInStation2 to false>>
+<<set $eatFromHumansInTrainStation to false>>
+<<set $trainStationHumans2 to false>>
+<<set $stayInTrainStation to false>>
+<<set $stayInTrainStation2 to false>>
+<<set $arrivedAtSterilization to false>>
+<<set $sterilized3 to false>>
 
 
 
@@ -958,7 +969,7 @@ You quickly scrap the meat off the bones, and feel satisfied.
 
 //You feel very satisfied. You also feel that, maybe, humans aren't so bad after all. (Hunger +3, Trust in Humans +2)//
 
-With your belly full, you start feeling sleepy. There are a few cardboard boxes and wooden crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+With your belly full, you start feeling sleepy. There are a few cardboard boxes and wooden crates around, and you find a covered spot to curl up and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Cage]].
 
 :: Restaurant - Trash
 <<if not $eatFromRestaurantTrash>>
@@ -972,7 +983,7 @@ Your stomach growls, and you start rummaging through the trash. You find some sc
 
 //You eat nasty food scraps from the trash. It is not tasty, but it is better than nothing. (Hunger +1, Health -1)//
 
-It's been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Box]].
+It's been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Cage]].
 
 :: Restaurant - Front
 <<scene "restaurant.gif" "Restaurant">>
@@ -998,10 +1009,15 @@ These humans are friendly, and they start petting you. After a few minutes of sn
 You decide to follow the strong smell of food, coming from the [[side alley of the restaurant|Restaurant - Back]].
 
 :: Train Station
+<<if not $sleepInTrainStation>>
+  <<run setup.adjust("hunger", -2)>>  
+  <<set $sleepInTrainStation to true>>
+<</if>>
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
 Last night you were so tired you don't even remember falling asleep. Apparently, you spent the night in the train station, and you wake up to the sound of trains passing by.
-//meter aqui tipo qnd tu dormes e acordas q a comida vai pra baixo??//
+
+//Passing the night in the train station has made you wake up hungry. (Hunger -2)//
 
 Water is still falling from the sky, although you feel warmer today. You stretch and start walking around the station. There are a few humans around, some are sitting on benches, others are running around. Strange [[creatures|Train Station - Cat or Humans]] they are. 
 
@@ -1016,9 +1032,15 @@ It looks like the cat lives in the station. Humans are kind enough to pet and fe
 * [[Meet the cat|Train Station - Cat]]
 
 :: Train Station - Cat
+<<if not $metCatInTrainStation>>
+  <<run setup.adjust("trustCats", +1)>>  
+  <<set $metCatInTrainStation to true>>
+<</if>>
 <<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-You approach the other cat, perhaps a new friend. As you get close to the furry stranger, it seems to be a bit wary of you. You meow and purr, trying to show that you mean no harm. The other cat seems to understand you, and it starts to purr back. You feel a sense of relief and happiness, as you have found a new friend in this strange place. You realize that you are not alone in this world, and that there are other cats out there who are also struggling to survive. 
+You approach the other cat, perhaps a new friend. As you get close to the furry stranger, it seems to be a bit wary of you. You meow and purr, trying to show that you mean no harm. The other cat seems to understand you, and it starts to purr back. You feel a sense of relief and happiness, as you have found a new friend in this strange place. 
+
+//You realize that you are not alone in this world, and that there are other cats out there who are also struggling to survive. (Trust in Cats +1)//
 
 The other cat seems to have a small shelter and bowls for food and water. This could mean that humans are kind enough to feed it. Should you stay and share the food with the other cat, or should you go meet the humans and see if they will feed you too?
 
@@ -1026,16 +1048,31 @@ The other cat seems to have a small shelter and bowls for food and water. This c
 * [[Stay with the cat|Train Station - Cat - Part 2]]
 
 :: Train Station - Cat - Part 2
+<<if not $eatFromCatInTrainStation>>
+  <<run setup.adjust("trustCats", +1)>>  
+  <<run setup.adjust("hunger", +1)>>  
+  <<set $eatFromCatInTrainStation to true>>
+<</if>>
 <<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-You decide to stay with your new friend. After all, it is good to have someone have your back in this world. The cat seems to be a permanent resident of the station. Humans regularly feed him. You share food and water. It isn't much, but it is enough to keep you going.
+You decide to stay with your new furry friend. After all, it is good to have someone have your back in this world. The cat seems to be a permanent resident of the station. Humans regularly feed him. He lets you have a little bit of his food and water. It isn't much, but it is enough to keep you going.
 
-You both become close. You share food, you groom each other, and you keep each other company. You feel a sense of belonging and companionship that you haven't felt in a long [[time...|Train Station - Cat - Part 3]]
+//You feel happy and grateful for the food and water, and to have found a friend in this strange place. (Hunger +1, Trust in Cats +1)//
+
+You both become close. You groom each other, and you keep each other company. You feel a sense of belonging and companionship that you haven't felt in a long [[time...|Train Station - Cat - Part 3]]
 
 :: Train Station - Cat - Part 3
+<<if not $feelWeakInStation>>
+  <<run setup.adjust("health", -3)>>  
+  <<set $feelWeakInStation to true>>
+<</if>>
 <<scene "cat-station.gif" "Train Station">>
 ! The Train Station
-At first everything seems to be going well. You and your new friend are surviving together. However, as time passes by, you start feeling sick and weak. You both [[do...|Train Station - Cat - Part 4]]
+At first everything seems to be going well. You and your new friend are surviving together. However, as time passes by, you start feeling sick and weak. 
+
+//You feel very weak and tired. You don't know what is happening to you, or what caused you to feel this way. (Health -3)//
+
+As you interact with your friend, you realize that you are not the only one who is affected. You are both feeling [[weak...|Train Station - Cat - Part 4]]
 
 :: Train Station - Cat - Part 4
 <<scene "cat-station-night.gif" "Train Station">>
@@ -1043,13 +1080,19 @@ At first everything seems to be going well. You and your new friend are survivin
 The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus, as it is spread by sharing food, bitting, grooming, and other close contact. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
+<<if not $feelWeakInStation2>>
+  <<run setup.adjust("health", -1)>>  
+  <<set $feelWeakInStation2 to true>>
+<</if>>
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-One day, a human passing by the station notices you and your friend. You are both very weak.
+Eventually, a human passing by the station notices you and your friend. You are both very weak.
 
-She seems to be studying you, although you are not sure why. She does not seem trustworhty...
+//You still feel very weak and tired. (Health -1)//
 
-Eventually, she comes in your friend's direction, and it looks like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape. It all happened so fast, you are not sure what to do.
+She seems to be studying you, although you are not sure why. You feel she may not be trustworhty...
+
+After looking at both of you for a while, she comes in your friend's direction, looking like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape. It all happened so fast, you are not sure what to do.
 
 She scoffs, and turns to you.
 
@@ -1059,9 +1102,10 @@ She scoffs, and turns to you.
 :: Train Station - Veterinary
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-You are too weak to run, so you let her get close. The human picks you up and puts you in a box. All of this makes you feel even more vulnerable. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
+You feel too weak to run, so you let her get close. The human picks you up and puts you in a cage. All of this makes you feel even more vulnerable. You feel scared and confused, try to meow and escape, but to no [[avail...|Sterilization]]
 
 :: Train Station - Ending - Disease
+<<run setup.adjust("health", -10)>>  
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 You used your last bit of energy to try to escape. After just a few moments, you realize you are too weak to continue. You end up collapsing, nearby the station, feeling your body shut down.
@@ -1073,14 +1117,29 @@ You were a stray cat, and your life was hard. You were a survivor, but in the en
 * [[Credits|Credits]]
 
 :: Train Station - Humans
+<<if not $eatFromHumansInTrainStation>>
+  <<run setup.adjust("hunger", +1)>>  
+  <<run setup.adjust("trustHumans", +1)>>
+  <<set $eatFromHumansInTrainStation to true>>
+<</if>>
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-The humans are kind enough to pet and feed the other cat. So you assume they should be kind to you too. You approach them, and they notice you and pet you. After interacting with a few of the tall humans, one one of them decides to feed you. You feel happy and satisfied. Perhaps, humans aren't so bad [[after all|Train Station - Humans - Part 2]].
+The humans are kind enough to pet and feed the other cat. So you assume they should be kind to you too. You approach them, and they notice you and pet you. After interacting with a few of the tall humans, one one of them decides to feed you. 
+
+//You feel happy and satisfied. (Hunger +1, Trust in Humans +1)//
+
+Perhaps, humans aren't so bad [[after all|Train Station - Humans - Part 2]].
 
 :: Train Station - Humans - Part 2
+<<if not $trainStationHumans2>>
+  <<run setup.adjust("hunger", -1)>>  
+  <<set $trainStationHumans2 to true>>
+<</if>>
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
 You end up spending a few days in the train station, and you feel safe and cared for. You have a roof over your head, which makes you feel secure. However, food is never a guarantee. Some days you are lucky, and some days you are not...
+
+//The last few days have not been too bad, but you are not eating very well. (Hunger -1)//
 
 * [[Stay in the train station|Train Station - Stay]]
 * [[Leave the train station|Train Station - Leave]]
@@ -1091,19 +1150,39 @@ You end up spending a few days in the train station, and you feel safe and cared
 Leaving the train station is a hard decision, but your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
 
 :: Train Station - Stay
+<<if not $stayInTrainStation>>
+  <<run setup.adjust("hunger", -2)>>  
+  <<run setup.adjust("health", -1)>>  
+  <<set $stayInTrainStation to true>>
+<</if>>
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-You decide to stay in the station. After all, it is a safe place.
+As days pass, you decide to stay in the station. After all, it is a safe place, and the closest to a home you have ever felt.
 
-Days pass... This is the closest to a home you have ever felt. But you are skinnier by the day. You never know when a piece of food will come your way, and you are always [[hungry...|Train Station - Stay - Part 2]]
+However, you are skinnier by the day. You never know when a piece of food will come your way, and you are always [[hungry...|Train Station - Stay - Part 2]]
 
+//The lack of proper nutrition is also affecting your health. (Hunger -2, Health -1)//
 
 :: Train Station - Stay - Part 2
+<<if not $stayInTrainStation2>>
+  <<run setup.adjust("hunger", -2)>>  
+  <<run setup.adjust("health", -1)>>  
+  <<set $stayInTrainStation2 to true>>
+<</if>>
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-After a few weeks, you start to feel weak and sick. There aren't as many humans around, and the food is scarce. As you stare at the less crowded station, you fear this might be the end. You keep trying to find a ways to get food, but you are too [[weak|Train Station - Ending - Hunger]] to move.
+You feel weak and more vulnerable by the day. 
+
+//The lack of proper nutrition is also affecting your health. (Hunger -2, Health -1)//
+
+<<if $health lte 4>>
+As you stare at the less crowded station, you fear this might be the end. You keep trying to find a way to get food, but you are too [[weak|Train Station - Ending - Hunger]] to even plead.
+<<else>>
+You still feel that you have forces, and although leaving the train station is a hard decision, your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
+<</if>>
 
 :: Train Station - Ending - Hunger
+<<run setup.adjust("hunger", -10)>>  
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
 You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't overcome the dangers of the streets. Hunger is one of the biggest threats to stray cats. Relying on scraps, rubbish and occasional kindness, food is unreliable and often unsafe. Many stray cats die from starvation, especially in winter.
@@ -1140,17 +1219,23 @@ You try to run, but your body is too slow and stiff from the cold. You see a str
 
 * [[Credits|Credits]]
 
-:: Human - Box
+:: Human - Cage
 <<scene "restaurant.gif" "City">>
 ! The restaurant
-You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a box. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no [[avail...|Sterilization]]
+You suddenly wake up with a human picking you up. You feel a bit scared, but have no time to react. The human puts inside you a cage. Under your body, you feel a soft blanket. It's comforting, but you're still scared and confused. You try to meow and escape, but to no [[avail...|Sterilization]]
 
 :: Sterilization
+<<if not $arrivedAtSterilization>>
+  <<run setup.adjust("hunger", +1)>>  
+  <<set $arrivedAtSterilization to true>>
+<</if>>
 <<scene "clinic.gif" "City">>
 ! The Clinic
-You are now inside a room. There are different voices and noise outside, which makes you feel scared. You don't know what is happening...
+You feel dizzy and scared as they carry you for what feels like an eternity, and then they take you inside a room. There are different voices and noises outside, which makes you feel scared. You don't know what is happening...
 
-Eventually, someone reaches and softly touches you. They carefully offer you some food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
+Eventually, someone comes to you, opens the cage, and softly touches you. They carefully offer you some food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
+
+//You feel a bit better after eating, but you are still scared and confused. (Hunger +1)//
 
 After a while, the humans come back. They pick you up, touch you and sting you. You still don't understand what is happening. Before you notice, you're back in the [[cage.|Sterilization - Part2]]
 
@@ -1159,12 +1244,18 @@ After a while, the humans come back. They pick you up, touch you and sting you. 
 ! The Clinic
 You wake up suddenly with someone entering the room. A human comes in and takes you.
 
-They sting you again, and then you feel [[sleepy once more...|Sterilization - Part3]]
+They sting you again. You start to feel [[sleepy...|Sterilization - Part3]]
 
 :: Sterilization - Part3
+<<if not $sterilized3>>
+  <<run setup.adjust("health", +3)>>  
+  <<set $sterilized3 to true>>
+<</if>>
 <<scene "clinic.gif" "City">>
 ! The Clinic
 Finally, you wake up, slowly. You feel dizzy, and in some pain. What has happened...?
+
+//Strangely, you're alright and feel like you are always getting better. You feel taken care of. (Health +3)//
 
 A few days go by... You are once again taken to another place. At this point you're getting used to this routine. At least you have food, and you're not cold [[anymore...|Shelter]]
 
@@ -1172,6 +1263,10 @@ A few days go by... You are once again taken to another place. At this point you
 <<scene "shelter.gif" "City">>
 ! The Shelter
 This time, you're in a louder place. You hear dogs barking, cats meowing, and other noises. You are put in a room with other cats.
+
+<<if $runFromDog is true >>
+Hearing the dogs outside stresses you out, as you remember the last time you were chased by one. You feel a bit scared, but you are not alone.
+<</if>>
 
 Frases para os finais possíveis:
 - (confiança alta gatos) Since you are used to being around other cats, you feel happy to have some company. You start to play with the other cats, and you feel a sense of [[belonging|Shelter - Colony]].
