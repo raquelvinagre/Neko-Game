@@ -740,7 +740,7 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 ! The Alley
 You start wandering the familiar streets of the quiet city. It's only a matter of time before it starts to get crowded.
 
-While you are getting out of the alley, you notice a red cup with some clear liquid in it. You feel thirsty, and the liquid looks like water. However, you also notice a strange smell coming from it. It could be something dangerous, but it could also be a lifesaver.
+While you are getting out of the alley, you notice a red cup with a clear liquid in it. You are feeling thirsty, so you approach it. As your whiskers start touching the water, you notice a strange smell emanating from it. You're not sure it's safe to drink, but you're not really in a position to be picky.
 
 * [[Drink from the cup|Alley - Drink]]
 * [[Ignore the cup|Alley - Ignore]]
@@ -780,7 +780,9 @@ A bird is perched on a branch, and it looks like it might be a good meal.
 :: Park - Humans
 <<scene "park.gif" "Humans in the park">>
 ! The Park
-You carefully approach the humans, hoping they might have some food for you. They notice you, however you're not sure they are friendly.
+You carefully approach the humans, hoping they might have some food for you. A strong smell of food wafts from their picnic basket. It's a feast!
+
+They notice you and stare for a moment. You're not sure they are friendly.
 
 * [[Steal their food|Park - Steal Food]] 
 * [[Meow, pleading for food|Park - Ask for food]]
@@ -795,9 +797,9 @@ You carefully approach the humans, hoping they might have some food for you. The
 ! The Park
 You wait near the humans, and when they are distracted, you quickly snatch a piece of tuna from their picnic basket. The humans notice you, and they are not happy. With a mouth full of food, you ran as fast as you can, and you manage to escape. 
 
-//You ate well, but your trust in humans has been shown. (Hunger +2, Trust in Humans -2)//
+//You ate well, but your trust in humans has been damaged. (Hunger +2, Trust in Humans -2)//
 
-A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. It's time to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
@@ -824,7 +826,7 @@ You start meowing and purring at the humans, hoping they will give you some food
 
 //You ate well, and your trust in humans has been shown. (Hunger +2, Trust in Humans +2)//
 <</if>>
-A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. It's time to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
@@ -849,9 +851,9 @@ You successfully catch your prey. When you're about to sink your teeth into it, 
 ! The Park
 You eat the bird all by yourself, and you feel satisfied. However, the other cat looks disappointed and walks away. You feel a bit guilty for not sharing.
 
-//You ate very well, but your trust in other cats has been shown. (Hunger +3, Trust in Cats -1)//
+//You ate very well, but your trust in other cats has been damaged. (Hunger +3, Trust in Cats -1)//
 
-A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. You decide to leave the park.
+A light rain starts falling, and you start to feel cold and tired. You need to find a place to rest and warm up. It's time to leave the park.
 
 * [[Explore the city|City]] 
 * [[Explore the suburbs|Suburbs]]
@@ -938,7 +940,7 @@ You try to find help, but you can't. You feel your body shutting down, and you k
   <<set $cityCold to true>>
 <</if>>
 ! The City
-You leave the park, going to the heart of the city. After a long walk through the city streets, you find yourself noticing a certain weight on your fur. The rain has become snow. You sneeze. The cold is starting to get to you.
+You enter the heart of the city. After a long walk through the crowded streets, you find yourself noticing a certain weight on your fur. The rain has become snow. You sneeze. The cold is starting to get to you.
 
 //The cold makes you feel weak. (Health -1)//
 
@@ -989,9 +991,9 @@ He briefly pets you and then goes inside for a moment.
 <</if>>
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
-The human comes back with a plate with pieces of fish bones and skin. He puts it down on the ground, gets up, and lights his cigarette. He starts puffing the smoke, looking at you.
+The human comes back with a plate with pieces of fish and skin. He puts it down on the ground, gets up, and lights his cigarette. He starts puffing the smoke, looking at you.
 
-You quickly scrap the meat off the bones, and feel satisfied. 
+You quickly scrap the last bits of fish, and lick your lips. 
 
 //You feel very satisfied. You also feel that, maybe, humans aren't so bad after all. (Hunger +3, Trust in Humans +2)//
 
@@ -1043,16 +1045,16 @@ You decide to follow the strong smell of food, coming from the [[side alley of t
 ! The Train Station
 Last night you were so tired you don't even remember falling asleep. Apparently, you spent the night in the train station, and you wake up to the sound of trains passing by.
 
-//Passing the night in the train station has made you wake up hungry. (Hunger -2)//
+//You wake up feeling hungry. (Hunger -2)//
 
-Water is still falling from the sky, although you feel warmer today. You stretch and start walking around the station. There are a few humans around, some are sitting on benches, others are running around. Strange [[creatures|Train Station - Cat or Humans]] they are. 
+Water is still falling from the sky, although you feel warmer today. You stretch, groom yourself, and start walking around the station. There are a few humans around, some are sitting on benches, others are running around. Strange [[creatures|Train Station - Cat or Humans]] they are. 
 
 :: Train Station - Cat or Humans
 <<scene "trainstation.gif" "Train Station">>
 ! The Train Station
-After wandering for a while, you find another cat, who seems to be a stray like you. It looks at you and meows. You meow back, and it seems to understand you.
+After wandering for a while, you find another cat, who seems to be a stray like you. It looks at you and meows. You meow back. The black, skinny cat seems to understand you.
 
-It looks like the cat lives in the station. Humans are kind enough to pet and feed it. Who should you go meet?
+It looks like the cat lives in the station. Humans are kind enough to pet and feed it. Perhaps they will be nice to you too. Who should you go meet?
 
 * [[Meet the humans|Train Station - Humans]]
 * [[Meet the cat|Train Station - Cat]]
@@ -1104,14 +1106,16 @@ As you interact with your friend, you realize that you are not the only one who 
 <<set $hasFelv to true>>
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus, as it is spread by sharing food, bitting, grooming, and other close contact. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
+//The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus, as it is spread by sharing food, bitting, grooming, and other close contact.//
+
+FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
-Eventually, a human passing by the station notices you and your friend. You are both very weak.
+Eventually, a short, middle-aged human passing by the station notices you and your friend. You both have had better days.
 
-She seems to be studying you, although you are not sure why. You feel she may not be trustworhty...
+She seems to be studying you, although you are not sure why. You feel she may not be trustworthy...
 
 After looking at both of you for a while, she comes in your friend's direction, looking like she might want to hurt him. He also notices her and, just as she is about to grab him, he manages to escape. It all happened so fast, you are not sure what to do.
 
@@ -1222,14 +1226,14 @@ You decide to keep exploring the city. There are cars passing, trucks making noi
 
 //The cold of the snow makes you feel even weaker. (Health -1)//
 
-Someone steps on your tail, and you feel a sharp pain. You yelp in pain, but nobody notices. You try to run away, running through the [[road...|Road - Runover]]
+Someone steps on your tail, and you feel a sharp pain. You yelp in pain, but nobody notices. You try to run away, crossing the [[road...|Road - Runover]]
 
 :: Road - Runover
 <<scene "citycrowded.gif" "City">>
 ! The City
 Suddenly, a car is coming towards you, and you can't get out of the way in time. The cold and icy road makes it hard for the driver to break in time.
 
-You try to run, but your body is too slow and stiff from the cold. You see a strong light approaching, and then everything goes [[black|Ending - Runover]].
+You try to dodge, but your body is too slow and stiff from the cold. You see a strong light approaching, and then everything goes [[black|Ending - Runover]].
 
 :: Ending - Runover
 <<scene "citycrowded.gif" "City">>
@@ -1251,7 +1255,7 @@ You suddenly wake up with a human picking you up. You feel a bit scared, but hav
 <</if>>
 <<scene "clinic.gif" "City">>
 ! The Clinic
-You feel dizzy and scared as they carry you for what feels like an eternity, and then they take you inside a room. There are different voices and noises outside, which makes you feel scared. You don't know what is happening...
+You feel dizzy and scared as they carry you for what feels like an eternity, and then they take you inside a room. There are different voices and noises outside, which keep you on alert. You don't know what is happening...
 
 Eventually, someone comes to you, opens the cage, and softly touches you. They carefully offer you some food and water. At first, you are afraid to leave the cage where they put you, but your stomach is growling, and you decide to eat.
 
@@ -1273,9 +1277,9 @@ They sting you again. You start to feel [[sleepy...|Sterilization - Part3]]
 <</if>>
 <<scene "clinic.gif" "City">>
 ! The Clinic
-Finally, you wake up, slowly. You feel dizzy, and in some pain. What has happened...?
+Finally, you wake up, slowly. You feel dizzy once again, and in some pain. What has happened...?
 
-//Strangely, you're alright and feel like you are always getting better. You feel taken care of. (Health +3)//
+//Strangely, there is a feeling of relief. You feel taken care of. (Health +3)//
 
 A few days go by... You are once again taken to another place. At this point you're getting used to this routine. At least you have food, and you're not cold [[anymore...|Shelter]]
 
