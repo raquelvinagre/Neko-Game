@@ -927,7 +927,7 @@ You drink from the puddle, and you feel a bit better. You find a few bushes to h
 ! The Suburbs
 And the next time you wake up, you feel weak and dizzy. The puddle was poisoned with pesticides.
 
-You try to find help, but you can't. You feel your body shutting down, and you know that this is the end. You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world.
+You try to find help, but you can't. You feel your body shutting down, and you know that this is the end. You were a stray cat, and your life was hard.
 
 //Stray cats drink from puddles, drains and garages, and eat from bins, so they meet poisons more often than pets do. Antifreeze tastes sweet and is extremely toxic: a very small amount can be fatal. Rat poison can also kill cats that eat a poisoned rodent.//
 
@@ -1245,7 +1245,7 @@ You try to dodge, but your body is too slow and stiff from the cold. You see a s
 <<scene "citycrowded.gif" "City">>
 ! The City
 
-//No one counts the stray cats killed on the road, so the real number is unknown. But studies of free-roaming pet cats show how dangerous roads are. Studies have shown that road accidents were the most common cause of death in cats, and especially for kittens.//
+//The real number of stray cats killed on the road is unknown. However, studies of free-roaming pet cats show how dangerous roads are. Road accidents are the most common cause of death in cats, and especially for kittens.//
 
 //In Europe, an estimated 1 in 5 free-roaming cats is hit by a car during its life, and most of those accidents are fatal.//
 
