@@ -717,13 +717,9 @@ html[data-debug-view] .debug[data-name]::after {
 ! Neko
 //A game about the life of a stray cat.//
 
-Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe. Life on the street is often short and difficult:
-* ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
-* ''Disease:'' Without vaccines or veterinary care, infections spread easily, especially in winter.
-* ''Danger:'' Traffic, cruelty, poison, predators and extreme weather are constant threats.
-* ''Fast reproduction:'' One unsterilized female can have multiple litters a year, and many kittens do not survive. This is why sterilization programs are important.
+Millions of cats live on the streets worldwide. Most were born outside, or were abandoned by people who once called them pets. They are not wild, and they are not safe. Life on the street is often short and difficult.
 
-In this game, you ''are'' one of them.
+In this game, you ''are'' one of them. Manage your Health, Hunger, and Trust in humans and other cats. Your choices will determine your fate.
 * [[Start|Alley]]
 
 :: Alley
@@ -1360,8 +1356,13 @@ You end up having a normal life in the shelter. You are among others like you, t
 <<scene "cat.gif" "Credits">>
 ! Credits
 
-Thanks for playing Neko. This game was made to raise awareness about the life of stray cats, and the dangers they face every day.
+Thanks for playing Neko. This game was made to raise awareness about the life of stray cats, and the dangers they face every day. Amongst the many challenges, the most common are:
+* ''Hunger:'' Strays rely on scraps, rubbish and occasional kindness. Food is unreliable and often unsafe.
+* ''Disease:'' Without vaccines or veterinary care, infections spread easily.
+* ''Danger:'' Traffic, cruelty, predators and extreme weather are constant threats.
+* ''Fast reproduction:'' One unsterilized female can have multiple litters a year, and many kittens do not survive. This is why sterilization programs are important.
 
+Find out the other possible endings:
 * <<link "Play Again">><<run Engine.restart()>><</link>>
 
 Artwork:
