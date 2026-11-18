@@ -706,6 +706,9 @@ html[data-debug-view] .debug[data-name]::after {
 <<set $stayInTrainStation2 to false>>
 <<set $arrivedAtSterilization to false>>
 <<set $sterilized3 to false>>
+<<set $drinkFromAlley to false>>
+<<set $hasFelv to false>>
+<<set $xxxx to false>>
 
 
 
@@ -735,7 +738,32 @@ Your stomach growls, as you haven't eaten properly in two days. You must find fo
 :: Alley - Leave
 <<scene "alley.mp4" "A city alley">>
 ! The Alley
-It's time to find something to eat. You start wandering the familiar streets of the quiet city. It's only a matter of time before it starts to get crowded.
+You start wandering the familiar streets of the quiet city. It's only a matter of time before it starts to get crowded.
+
+While you are getting out of the alley, you notice a red cup with some clear liquid in it. You feel thirsty, and the liquid looks like water. However, you also notice a strange smell coming from it. It could be something dangerous, but it could also be a lifesaver.
+
+* [[Drink from the cup|Alley - Drink]]
+* [[Ignore the cup|Alley - Ignore]]
+
+:: Alley - Drink
+<<if not $drinkFromAlley>>
+  <<run setup.adjust("health", -1)>>
+  <<set $drinkFromAlley to true>>
+<</if>>
+<<scene "alley.mp4" "A city alley">>
+! The Alley
+You approach the cup and sniff it. The smell is strange, but you are very thirsty. You decide to take a sip. The liquid tastes bitter and makes you feel dizzy. 
+
+//It was not water, but some kind of alcoholic beverage. It is nasty, and not good for you. (Health -1)//
+
+After a few moments, you feel a bit better, but you are still thirsty. You decide to leave the alley and look for food and water elsewhere. 
+
+You walk a few blocks and see a [[park|Park]] in the distance. 
+
+:: Alley - Ignore
+<<scene "alley.mp4" "A city alley">>
+! The Alley
+You decide it's best if you do not drink from the cup. It smells suspicious, and you don't want to risk it. You decide to leave the alley and look for food and water elsewhere. 
 
 You walk a few blocks and see a [[park|Park]] in the distance. 
 
@@ -864,7 +892,7 @@ The sound of a branch breaking behind you makes you turn around. A dog is runnin
 ! The Suburbs
 After a long chase, you manage to escape the dog. You find yourself in a quiet street. Perhaps it's time to leave the Suburbs.
 
-//Running from the dog has left you exhausted and hungry. You feel weak and tired. (Health -3, Hunger -2)//
+//Running from the dog has left you exhausted and hungry. You feel weak and tired. (Health -2, Hunger -2)//
 
 However, before you head out, you see a puddle of water on the ground, and it triggers the instinct to drink it. The puddle seems perfect to quench your thirst.
 
@@ -886,7 +914,7 @@ You decided to leave the Suburbs. Luckily, you found a soggy piece of bread on t
 :: Water - Puddle
 <<scene "suburbs-alley.gif" "The suburbs">>
 ! The Suburbs 
-You drink from the puddle, and you feel a bit better. You find a few bushes to hide in, and you rest for a while. The wind keeps [[blowing...|Ending-Poisoned]]
+You drink from the puddle, and you feel a bit better. You find a few bushes to hide in, and you rest for a while. You fall asleep listening to the wind [[blowing...|Ending-Poisoned]]
 
 :: Ending-Poisoned
 <<if not $endingPoisoned>>
@@ -895,8 +923,6 @@ You drink from the puddle, and you feel a bit better. You find a few bushes to h
 <</if>>
 <<scene "suburbs.gif" "The suburbs">>
 ! The Suburbs
-You fall asleep listening to the wind...
-
 And the next time you wake up, you feel weak and dizzy. The puddle was poisoned with pesticides.
 
 You try to find help, but you can't. You feel your body shutting down, and you know that this is the end. You were a stray cat, and your life was hard. You were a survivor, but in the end, you couldn't survive the dangers of the world.
@@ -930,7 +956,7 @@ Suddenly, you start smelling a delicious, warm and fishy aroma. It leads to a ne
 //Sniff sniff// You follow the smell of fried fish and find yourself in front of a restaurant. The scent is overflowing your mind, as you imagine yourself eating a big, juicy piece of fish, and your stomach growls in anticipation.
 
 * [[Go around to the back of the restaurant|Restaurant - Back]]
-* [[Stay around entrance|Restaurant - Front]]
+* [[Stay around the entrance|Restaurant - Front]]
 
 :: Restaurant - Back
 <<scene "restaurant.gif" "Restaurant">>
@@ -979,11 +1005,11 @@ With your belly full, you start feeling sleepy. There are a few cardboard boxes 
 <</if>>
 <<scene "restaurant.gif" "Restaurant">>
 ! The Restaurant
-Your stomach growls, and you start rummaging through the trash. You find some scraps of food, but they are not enough to fill your belly.  
+You hide from him and wait a little bit. As your stomach growls, you go to the trash he just threw away and start rummaging through it. You find some scraps of food, but they are not enough to fill your belly.  
 
 //You eat nasty food scraps from the trash. It is not tasty, but it is better than nothing. (Hunger +1, Health -1)//
 
-It's been a long day. In this alley, you find a cardboardbox to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Cage]].
+It's been a long day. In this alley, you find a cardboard box to curl up in and rest. You feel safe for now. Your eyes are getting heavy, and you drift off to [[sleep...|Human - Cage]].
 
 :: Restaurant - Front
 <<scene "restaurant.gif" "Restaurant">>
@@ -1063,32 +1089,27 @@ You both become close. You groom each other, and you keep each other company. Yo
 
 :: Train Station - Cat - Part 3
 <<if not $feelWeakInStation>>
-  <<run setup.adjust("health", -3)>>  
+  <<run setup.adjust("health", -2)>>  
   <<set $feelWeakInStation to true>>
 <</if>>
 <<scene "cat-station.gif" "Train Station">>
 ! The Train Station
 At first everything seems to be going well. You and your new friend are surviving together. However, as time passes by, you start feeling sick and weak. 
 
-//You feel very weak and tired. You don't know what is happening to you, or what caused you to feel this way. (Health -3)//
+//You feel very weak and tired. You don't know what is happening to you, or what caused you to feel this way. (Health -2)//
 
 As you interact with your friend, you realize that you are not the only one who is affected. You are both feeling [[weak...|Train Station - Cat - Part 4]]
 
 :: Train Station - Cat - Part 4
+<<set $hasFelv to true>>
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 The other cat is sick with Feline Leukemia Virus (FeLV). You were also infected with the virus, as it is spread by sharing food, bitting, grooming, and other close contact. FeLV is a serious disease that affects cats, and it can be [[fatal.|Train Station - Cat - Part 5]]
 
 :: Train Station - Cat - Part 5
-<<if not $feelWeakInStation2>>
-  <<run setup.adjust("health", -1)>>  
-  <<set $feelWeakInStation2 to true>>
-<</if>>
 <<scene "cat-station-night.gif" "Train Station">>
 ! The Train Station
 Eventually, a human passing by the station notices you and your friend. You are both very weak.
-
-//You still feel very weak and tired. (Health -1)//
 
 She seems to be studying you, although you are not sure why. You feel she may not be trustworhty...
 
@@ -1174,11 +1195,10 @@ However, you are skinnier by the day. You never know when a piece of food will c
 You feel weak and more vulnerable by the day. 
 
 //The lack of proper nutrition is also affecting your health. (Hunger -2, Health -1)//
-
-<<if $health lte 4>>
+<<if $health lte 2>>
 As you stare at the less crowded station, you fear this might be the end. You keep trying to find a way to get food, but you are too [[weak|Train Station - Ending - Hunger]] to even plead.
 <<else>>
-You still feel that you have forces, and although leaving the train station is a hard decision, your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
+You still feel that you have strength, and although leaving the train station is a hard decision, your instincts tell you that you need to keep moving. You head into the city, and you find yourself in a busy street. The familiar scent of warm food is back and, this time, you decide to [[follow it|Restaurant]].
 <</if>>
 
 :: Train Station - Ending - Hunger
@@ -1264,21 +1284,28 @@ A few days go by... You are once again taken to another place. At this point you
 ! The Shelter
 This time, you're in a louder place. You hear dogs barking, cats meowing, and other noises. You are put in a room with other cats.
 
-<<if $runFromDog is true >>
+<<if $runFromDog is true>>\
 Hearing the dogs outside stresses you out, as you remember the last time you were chased by one. You feel a bit scared, but you are not alone.
-<</if>>
 
-Frases para os finais possíveis:
-- (confiança alta gatos) Since you are used to being around other cats, you feel happy to have some company. You start to play with the other cats, and you feel a sense of [[belonging|Shelter - Colony]].
-- (confiança baixa gatos) Since you are not used to being around other cats, you feel a bit uncomfortable. You try to avoid the other cats, you don't know if they are friendly or [[not|Shelter - Adopted]].
-- (ter FeLV) You were tested for Feline Leukemia Virus (FeLV), and the results came back positive. You are put in a separate room with other infected [[cats|Shelter - FeLV]].
+<</if>>\
+<<if $hasFelv is true>>\
+You were tested for Feline Leukemia Virus (FeLV), and the results came back positive. You are put in a separate room with other infected [[cats|Shelter - FeLV]].
+<<elseif $trustCats gt $trustHumans>>\
+Since you are used to being around other cats, you feel happy to have some company. You start to play with the other cats, and you feel a sense of [[belonging|Shelter - Colony]].
+<<elseif $trustCats lt $trustHumans>>\
+Since you are not used to being around other cats, you feel a bit uncomfortable. You try to avoid the other cats, you don't know if they are friendly or [[not|Shelter - Adopted]].
+<<else>>\
+The other cats watch you, and the humans watch you from the other side of the door. Nobody pushes you either way: the choice is yours.
+* [[Join the other cats|Shelter - Colony]]
+* [[Approach the humans|Shelter - Adopted]]
+<</if>>
 
 :: Shelter - Adopted
 <<scene "shelter.gif" "City">>
 ! The Shelter
 After some time in the shelter, you realize humans sometimes come and visit the cats. Sometimes they take one, and sometimes they simply leave.
 
-One day, a small human comes and notices you. You approach her and she pets you. She looks at the other humans and points at you. They seem to understand, and they take you [[home.|Adopted]]
+One day, a small human comes and notices you. You approach her and she pets you. She looks at the other humans and points at you. You sense a connection, and they take you [[home.|Adopted]]
 
 :: Adopted
 <<scene "adopted.webp" "City">>
@@ -1331,6 +1358,7 @@ https://i.pinimg.com/originals/1e/7d/d6/1e7dd6800a6ad9862861c878cfcc2fb2.gif~
 http://i.pinimg.com/originals/34/16/fc/3416fc4113b69a0bf1cc75a772c4b5c4.gif
 https://i.pinimg.com/originals/7d/04/0e/7d040e94931427709008aaeda14db9c8.gif
 https://id.pinterest.com/pin/1087900853740029266/
+http://youtube.com/watch?v=Wb1NhTdm6SI
 
 Music:
 https://pixabay.com/music/modern-classical-180128-piano-ennui-nostalgic-emotional-lofi-96266/
